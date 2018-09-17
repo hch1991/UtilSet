@@ -1,4 +1,16 @@
 # MyUtils
+
+引入：
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+  and:
+  implementation 'com.github.hch1991:MyUtils:v1.0.1'
+  
+
 工具类集合
 MLog工具类 日期获取工具类  网络检查工具类  权限检查工具类 MD5工具类
 日志保存工具类
