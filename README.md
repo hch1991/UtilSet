@@ -1,14 +1,22 @@
 # MyUtils
 
-引入：
-allprojects {
+使用
+
+    project build.gradle下添加：
+
+maven { url 'https://jitpack.io' }
+
+如下：
+
+	allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
-  and:
-  implementation 'com.github.hch1991:MyUtils:v1.0.1'
+
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.0.1'
+  
   
 
 工具类集合
