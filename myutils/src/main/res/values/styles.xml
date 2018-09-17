@@ -1,0 +1,12 @@
+<resources>
+
+
+    <style name="transparentFrameWindowStyle" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/sheet_choose_bg</item>
+    </style>
+    <style name="main_menu_animstyle">
+        <item name="android:windowEnterAnimation">@anim/sheet_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/sheet_dialog_out_anim</item>
+    </style>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.hch.myutils2.utils;
+package com.hch.myutils.utils;
 
 import android.content.Context;
 import android.os.Environment;
@@ -82,7 +82,7 @@ public class LogcatHelper {
             mPID = pid;
             try {
                 out = new FileOutputStream(new File(dir, "3box-"
-                        + MyDate.getFileName() + ".log"));
+                        + MyDate.getData() + ".log"));
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

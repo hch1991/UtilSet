@@ -1,4 +1,4 @@
-package com.hch.myutils2.utils;
+package com.hch.myutils.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

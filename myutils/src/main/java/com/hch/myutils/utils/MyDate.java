@@ -1,4 +1,4 @@
-package com.hch.myutils2.utils;
+package com.hch.myutils.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
