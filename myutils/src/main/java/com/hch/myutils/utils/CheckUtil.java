@@ -1,20 +1,69 @@
 package com.hch.myutils.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
- * 检查权限工具类
+ * 检查工具类
  *
  * @author hch
  *
  */
+public class CheckUtil {
 
-public class PermisionUtils {
+    //检查string是否是json格式
+    public static boolean isGoodJson(String json) {
+        if (json.equals("") && json.length() >= 0) {
+            return false;
+        }
+        try {
+            new JsonParser().parse(json);
+            return true;
+        } catch (JsonParseException e) {
+            return false;
+        }
+    }
+
+    //根据包名检查apk是否安装
+    public static boolean checkAppInstallByPackageNames(Context mContext, String packageName) {
+        PackageManager pm = mContext.getPackageManager(); //获取本地的所有APP包名
+        List<PackageInfo> packList = pm.getInstalledPackages(0);
+        // 循环
+        for (int i = 0; i < packList.size(); i++) {
+            // 比对
+            if (((PackageInfo) packList.get(i)).packageName.equalsIgnoreCase(packageName))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     *  检查文件是否存在
+     * @ClassName SDCardUtil
+     *@author HeChuang
+     *@time 2016/11/21 14:17
+     */
+    public static boolean fileIsExists(String filePath, String fileName){
+        File fp = new File(filePath);
+        if(!fp.exists()){
+            fp.mkdir();
+        }
+        File fn = new File(filePath+fileName);
+        if (fp.exists()) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 检查申请单个权限
      *
@@ -57,4 +106,6 @@ public class PermisionUtils {
             ActivityCompat.requestPermissions(activity, permissions, permissionsRequest);
         }
     }
+
+
 }

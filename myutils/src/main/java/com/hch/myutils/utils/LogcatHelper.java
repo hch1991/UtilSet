@@ -33,10 +33,9 @@ public class LogcatHelper {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             PATH_LOGCAT = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + File.separator + "3box";
+                    .getAbsolutePath();
         } else {// 如果SD卡不存在，就保存到本应用的目录下
-            PATH_LOGCAT = context.getFilesDir().getAbsolutePath()
-                    + File.separator + "3box";
+            PATH_LOGCAT = context.getFilesDir().getAbsolutePath();
         }
         File file = new File(PATH_LOGCAT);
         if (!file.exists()) {
@@ -56,7 +55,9 @@ public class LogcatHelper {
         mPId = android.os.Process.myPid();
     }
 
-    public void start() {
+    public void start(String filePath) {
+        if(filePath != null)
+            PATH_LOGCAT = filePath;
         if (mLogDumper == null)
             mLogDumper = new LogDumper(String.valueOf(mPId), PATH_LOGCAT);
         mLogDumper.start();
@@ -81,7 +82,7 @@ public class LogcatHelper {
         public LogDumper(String pid, String dir) {
             mPID = pid;
             try {
-                out = new FileOutputStream(new File(dir, "3box-"
+                out = new FileOutputStream(new File(dir, "Logcat-"
                         + MyDate.getData() + ".log"));
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
