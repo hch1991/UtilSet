@@ -42,3 +42,6 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 正则校验工具类
 * String工具类
 * Toast工具类
+* 自定义圆形imageView (CircleImageView)
+* 自定义loadingDialog
+* 自定义带旋转动画的loadingDialog
