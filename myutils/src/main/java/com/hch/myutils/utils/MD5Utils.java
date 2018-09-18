@@ -7,8 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * 作者：hch
- * 描述：MD5操作
+ * @ClassName: MD5Utils
+ * @Description: TODO MD5操作
+ * @author hechuang
+ * @date 2018/9/18 14:30
+ *
  */
 public class MD5Utils {
     /**

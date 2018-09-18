@@ -1,14 +1,13 @@
 package com.hch.myutils.utils;
 
-/**
- * Created by hch on 2016/12/10.
- */
-
 import java.util.regex.Pattern;
 
 /**
- * 校验器:利用正则表达式校验邮箱、手机号等
- * @author hch
+ * @ClassName: Validator
+ * @Description: TODO 校验器:利用正则表达式校验邮箱、手机号等
+ * @author hechuang
+ * @date 2018/9/18 14:32
+ *
  */
 public class Validator {
     /**

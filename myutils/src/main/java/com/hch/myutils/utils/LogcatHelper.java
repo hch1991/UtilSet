@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * log日志统计保存
- *
- * @author hch
+ * @ClassName: LogcatHelper
+ * @Description: TODO log日志统计保存
+ * @author hechuang
+ * @date 2018/9/18 14:30
  *
  */
-
 public class LogcatHelper {
 
     private static LogcatHelper INSTANCE = null;

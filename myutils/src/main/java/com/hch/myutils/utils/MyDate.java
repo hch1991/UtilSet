@@ -3,9 +3,10 @@ package com.hch.myutils.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
- * 获取时间工具类
- *
- * @author hch
+ * @ClassName: MyDate
+ * @Description: TODO 时间工具类
+ * @author hechuang
+ * @date 2018/9/18 14:31
  *
  */
 public class MyDate {

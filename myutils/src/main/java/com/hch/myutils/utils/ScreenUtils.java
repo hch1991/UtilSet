@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
- * @description:获得屏幕相关的辅助类
- * @author hch
- * @date 2015.10.10
- * 
- * 
+ * @ClassName: ScreenUtils
+ * @Description: TODO 获得屏幕相关的辅助类
+ * @author hechuang
+ * @date 2018/9/18 14:31
+ *
  */
 public class ScreenUtils
 {

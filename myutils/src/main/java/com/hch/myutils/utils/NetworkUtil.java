@@ -16,9 +16,10 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.List;
 /**
- * 网络工具类
- *
- * @author hch
+ * @ClassName: NetworkUtil
+ * @Description: TODO 网络工具类
+ * @author hechuang
+ * @date 2018/9/18 14:31
  *
  */
 public class NetworkUtil {

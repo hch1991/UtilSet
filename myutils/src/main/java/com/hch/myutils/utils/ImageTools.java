@@ -1,6 +1,5 @@
 package com.hch.myutils.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -16,11 +15,8 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.util.Base64;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,13 +24,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 /**
- * 图片操作工具类
- * @ClassName ImageTools
- *@author HeChuang
- *@time 2016/11/1 15:51
+ * @ClassName: ImageTools
+ * @Description: TODO 图片操作工具类
+ * @author hechuang
+ * @date 2018/9/18 14:30
+ *
  */
 public final class ImageTools {
 

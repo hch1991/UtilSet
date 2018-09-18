@@ -13,9 +13,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * 检查工具类
- *
- * @author hch
+ * @ClassName: CheckUtil
+ * @Description: TODO 检查工具类
+ * @author hechuang
+ * @date 2018/9/18 14:29
  *
  */
 public class CheckUtil {

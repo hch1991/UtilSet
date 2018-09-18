@@ -4,9 +4,11 @@ import android.util.Log;
 
 
 /**
- * log工具.
- *@Title:
- *@Description:
+ * @ClassName: MLog
+ * @Description: TODO log工具.
+ * @author hechuang
+ * @date 2018/9/18 14:31
+ *
  */
 public class MLog
 {

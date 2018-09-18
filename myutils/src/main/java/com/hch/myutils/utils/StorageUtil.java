@@ -17,6 +17,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @ClassName: StorageUtil
+ * @Description: TODO  存储工具类
+ * @author hechuang
+ * @date 2018/9/18 14:32
+ *
+ */
 public class StorageUtil {
 	private static final int ERROR = -1;
 
