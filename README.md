@@ -41,3 +41,4 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 存储工具类 
 * 正则校验工具类
 * String工具类
+* Toast工具类
