@@ -1,4 +1,4 @@
-package com.hch.myutils2;
+package com.hch.myutils;
 
 import org.junit.Test;
 

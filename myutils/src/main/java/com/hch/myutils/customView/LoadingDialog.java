@@ -9,7 +9,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hch.myutils2.R;
+import com.hch.myutils.R;
+
 
 /**
  * @ClassName: LoadingDialog

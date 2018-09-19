@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
-import com.hch.myutils2.R;
+import com.hch.myutils.R;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.hch.myutils2;
+package com.hch.myutils;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
