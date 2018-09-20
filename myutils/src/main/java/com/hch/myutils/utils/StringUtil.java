@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * Author:pengjianbo
  * Date:15/9/17 下午4:22
  */
-public class StringUtils {
+public class StringUtil {
 
     /**
      * is null or its length is 0 or it is made by space
@@ -206,7 +206,7 @@ public class StringUtils {
      * @return
      */
     public static String htmlEscapeCharsToString(String source) {
-        return StringUtils.isEmpty(source) ? source : source.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
+        return StringUtil.isEmpty(source) ? source : source.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
                 .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
     }
 

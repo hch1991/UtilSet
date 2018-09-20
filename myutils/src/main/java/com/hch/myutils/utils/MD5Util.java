@@ -7,13 +7,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @ClassName: MD5Utils
+ * @ClassName: MD5Util
  * @Description: TODO MD5操作
  * @author hechuang
  * @date 2018/9/18 14:30
  *
  */
-public class MD5Utils {
+public class MD5Util {
     /**
      * Encode MD5 for a string
      *
