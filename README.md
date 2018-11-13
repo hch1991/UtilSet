@@ -45,3 +45,15 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 自定义圆形imageView (CircleImageView)
 * 自定义loadingDialog
 * 自定义带旋转动画的loadingDialog
+
+# 2018.10.27
+* 修改Toast工具类 添加可以在服务中进行提示的toast
+* 添加设备信息工具类
+* 添加时间管理工具类
+
+# 2018.11.13
+* 修改屏幕工具类 添加dpi px sp 等转换方法
+* 添加button防多点工具类
+* 添加文件读写工具类
+* 添加glide网络图片加载工具类
+* 添加wifi操作工具类
