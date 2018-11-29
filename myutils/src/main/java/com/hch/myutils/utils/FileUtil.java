@@ -30,7 +30,29 @@ public class FileUtil {
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                return false;
             }
+        }
+        return true;
+    }
+    /**
+     * @Description: TODO 根据路径创建文件夹
+     * @author : hechuang
+     * @param : 
+     * @return : 
+     * created at 2018/11/28 11:50
+     */
+    
+    public static boolean createDir(String dirPath) {
+        File file = new File(dirPath);
+        try {
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
         }
         return true;
     }
