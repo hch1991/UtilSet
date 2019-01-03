@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class WifiAdmin {
+public class WifiAdminUtil {
     // 定义WifiManager对象
     private WifiManager mWifiManager;
     // 定义WifiInfo对象
@@ -37,7 +37,7 @@ public class WifiAdmin {
     static final int SECURITY_EAP = 3;
 
     // 构造器
-    public WifiAdmin(Context context) {
+    public WifiAdminUtil(Context context) {
         // 取得WifiManager对象
         mWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);

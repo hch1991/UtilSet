@@ -32,7 +32,7 @@ public class MobileUtil {
      * @return : 
      * created at 2018/10/24 15:33
      */
-    private int getNumCores(){
+    public static int getNumCores(){
         // Private Class to display only CPU devices in the directory listing
         class CpuFilter implements FileFilter
         {
@@ -122,7 +122,7 @@ public class MobileUtil {
      * @return : 
      * created at 2018/10/24 15:54
      */
-    private static String getWifiAddress() {
+    public static String getWifiAddress() {
         try {
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
@@ -147,6 +147,20 @@ public class MobileUtil {
         }
         return "02:00:00:00:00:00";
     }
+
+    /**
+     * @Description: TODO 获取蓝牙名称
+     * @author : hechuang
+     * @param : 
+     * @return : 
+     * created at 2019/1/3 15:16
+     */
+     public static String getBlueToothName() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.getName();
+    }
+    
+    
 
     /**
      * @Description: TODO 获取手机sdk版本
@@ -192,6 +206,18 @@ public class MobileUtil {
         return getPackageInfo(context).versionName;
     }
     /**
+     * @Description: TODO 获取固件版本
+     * @author : hechuang
+     * @param : 
+     * @return : 
+     * created at 2019/1/3 15:17
+     */
+    
+    public static String getFrameworkVersion() {
+        return android.os.Build.ID;
+    }
+    
+    /**
      * @Description: TODO 获取当前应用包信息
      * @author : hechuang
      * @param :
@@ -221,8 +247,8 @@ public class MobileUtil {
      * @return : 
      * created at 2018/11/22 17:14
      */
-    
-    private void doStartApplicationWithPackageName(Context context,String packagename) {
+
+    public void doStartApplicationWithPackageName(Context context,String packagename) {
 
         // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
         PackageInfo packageinfo = null;
