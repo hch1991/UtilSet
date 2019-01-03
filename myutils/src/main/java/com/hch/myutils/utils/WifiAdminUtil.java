@@ -254,51 +254,78 @@ public class WifiAdminUtil {
         mWifiManager.removeNetwork(netId);
     }
 
-//然后是一个实际应用方法，只验证过没有密码的情况：
+    /**
+     * @Description: TODO 连接指令wifi
+     * @author : hechuang
+     * @param :
+     * @return :
+     * created at 2019/1/3 17:15
+     */
+    public void connectWifi(String ssid, String password, int wifiType) {
+        Log.d("Cache_Log", "ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
+        int netId = mWifiManager.addNetwork(createWifiConfig(ssid, password, wifiType));
+        boolean enable = mWifiManager.enableNetwork(netId, true);
+        Log.d("Cache_Log", "enable: " + enable);
+        boolean reconnect = mWifiManager.reconnect();
+        Log.d("Cache_Log", "reconnect: " + reconnect);
+    }
 
-    public WifiConfiguration CreateWifiInfo(String SSID, String Password, int Type) {
-        WifiConfiguration config = new WifiConfiguration();
+    /**
+     * @Description: TODO 根据wifi加密类型配置wifi设置
+     * @author : hechuang
+     * @param :
+     * @return :
+     * created at 2019/1/3 17:15
+     */
+
+    private WifiConfiguration createWifiConfig(String SSID, String password, int type) {
+        WifiConfiguration config = null;
+        if (mWifiManager != null) {
+            List<WifiConfiguration> existingConfigs = mWifiManager.getConfiguredNetworks();
+            for (WifiConfiguration existingConfig : existingConfigs) {
+                if (existingConfig == null) continue;
+                if (existingConfig.SSID.equals("\"" + SSID + "\"")  /*&&  existingConfig.preSharedKey.equals("\""  +  password  +  "\"")*/) {
+                    config = existingConfig;
+                    break;
+                }
+            }
+        }
+        if (config == null) {
+            config = new WifiConfiguration();
+        }
         config.allowedAuthAlgorithms.clear();
         config.allowedGroupCiphers.clear();
         config.allowedKeyManagement.clear();
         config.allowedPairwiseCiphers.clear();
         config.allowedProtocols.clear();
         config.SSID = "\"" + SSID + "\"";
-
-        WifiConfiguration tempConfig = this.IsExsits(SSID);
-        if (tempConfig != null) {
-            mWifiManager.removeNetwork(tempConfig.networkId);
-        }
-
-        if (Type == 1) //WIFICIPHER_NOPASS
-        {
-            config.wepKeys[0] = "";
+        // 分为三种情况：0没有密码1用wep加密2用wpa加密
+        if (type == 0) {// WIFICIPHER_NOPASSwifiCong.hiddenSSID = false;
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            config.wepTxKeyIndex = 0;
-        }
-        if (Type == 2) //WIFICIPHER_WEP
-        {
+        } else if (type == 1) {  //  WIFICIPHER_WEP
             config.hiddenSSID = true;
-            config.wepKeys[0] = "\"" + Password + "\"";
-            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+            config.wepKeys[0] = "\"" + password + "\"";
+            config.allowedAuthAlgorithms
+                    .set(WifiConfiguration.AuthAlgorithm.SHARED);
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+            config.allowedGroupCiphers
+                    .set(WifiConfiguration.GroupCipher.WEP104);
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
             config.wepTxKeyIndex = 0;
-        }
-        if (Type == 3) //WIFICIPHER_WPA
-        {
-            config.preSharedKey = "\"" + Password + "\"";
+        } else if (type == 2) {   // WIFICIPHER_WPA
+            config.preSharedKey = "\"" + password + "\"";
             config.hiddenSSID = true;
-            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            config.allowedAuthAlgorithms
+                    .set(WifiConfiguration.AuthAlgorithm.OPEN);
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-            //config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+            config.allowedPairwiseCiphers
+                    .set(WifiConfiguration.PairwiseCipher.TKIP);
             config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+            config.allowedPairwiseCiphers
+                    .set(WifiConfiguration.PairwiseCipher.CCMP);
             config.status = WifiConfiguration.Status.ENABLED;
         }
         return config;
