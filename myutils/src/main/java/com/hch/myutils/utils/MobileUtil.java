@@ -248,7 +248,7 @@ public class MobileUtil {
      * created at 2018/11/22 17:14
      */
 
-    public void doStartApplicationWithPackageName(Context context,String packagename) {
+    public static void doStartApplicationWithPackageName(Context context,String packagename) {
 
         // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
         PackageInfo packageinfo = null;
