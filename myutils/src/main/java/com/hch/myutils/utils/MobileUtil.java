@@ -1,9 +1,11 @@
 package com.hch.myutils.utils;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -24,6 +26,9 @@ import java.util.regex.Pattern;
  * @date 2018/10/24 15:26
  */
 public class MobileUtil {
+
+    private static BatteryReceiver receiver;
+    public static int currentBattery;
 
     /**
      * @Description: TODO 获取cpu核心数
@@ -285,6 +290,27 @@ public class MobileUtil {
 
             intent.setComponent(cn);
             context.startActivity(intent);
+        }
+    }
+    /**
+     * @Description: TODO 开启手机电量监听
+     * @param :
+     * @return :
+     * created at 2019/1/8
+     * @author : hechuang
+     */
+    public static void  startBatteryReceiver(Context context){
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        receiver = new BatteryReceiver();
+        context.registerReceiver(receiver, filter);
+    }
+
+    static class BatteryReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int current = intent.getExtras().getInt("level");// 获得当前电量
+            int total = intent.getExtras().getInt("scale");// 获得总电量
+            currentBattery = current * 100 / total;
         }
     }
 }

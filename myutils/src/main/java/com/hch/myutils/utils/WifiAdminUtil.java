@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WifiAdminUtil {
@@ -124,18 +125,36 @@ public class WifiAdminUtil {
     @SuppressLint("WrongConstant")
     public void startScan(Context context) {
         mWifiManager.startScan();
-        // 得到扫描结果
-        mWifiList = mWifiManager.getScanResults();
+        //得到扫描结果
+        List<ScanResult> results = mWifiManager.getScanResults();
         // 得到配置好的网络连接
         mWifiConfiguration = mWifiManager.getConfiguredNetworks();
-        if (mWifiList == null) {
+        if (results == null) {
             if (mWifiManager.getWifiState() == 3) {
                 Toast.makeText(context, "当前区域没有无线网络", Toast.LENGTH_SHORT).show();
             } else if (mWifiManager.getWifiState() == 2) {
-                Toast.makeText(context, "WiFi正在开启，请稍后重新点击扫描", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "wifi正在开启,请稍后扫描", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "WiFi没有开启，无法扫描", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "WiFi没有开启", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            mWifiList = new ArrayList();
+            for (ScanResult result : results) {
+                if (result.SSID == null || result.SSID.length() == 0 || result.capabilities.contains("[IBSS]")) {
+                    continue;
+                }
+                boolean found = false;
+                for (ScanResult item : mWifiList) {
+                    if (item.SSID.equals(result.SSID) &&item.capabilities.equals(result.capabilities)){
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    mWifiList.add(result);
+                }
+            }
+
         }
     }
 
@@ -255,11 +274,11 @@ public class WifiAdminUtil {
     }
 
     /**
-     * @Description: TODO 连接指令wifi
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2019/1/3 17:15
+     * @Description: TODO 连接指令wifi
+     * @author : hechuang
      */
     public void connectWifi(String ssid, String password, int wifiType) {
         Log.d("Cache_Log", "ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
@@ -271,11 +290,11 @@ public class WifiAdminUtil {
     }
 
     /**
-     * @Description: TODO 根据wifi加密类型配置wifi设置
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2019/1/3 17:15
+     * @Description: TODO 根据wifi加密类型配置wifi设置
+     * @author : hechuang
      */
 
     private WifiConfiguration createWifiConfig(String SSID, String password, int type) {
