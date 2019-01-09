@@ -154,7 +154,7 @@ public class MobileUtil {
     }
 
     /**
-     * @Description: TODO 获取蓝牙名称
+     * @Description: TODO 获取本机蓝牙名称
      * @author : hechuang
      * @param : 
      * @return : 

@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.hch.myutils.interfaces.ConnectedBluetoothDeviceInterface;
 import com.hch.myutils.interfaces.ScanBluetoothDeviceInterface;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.ContentValues.TAG;
@@ -228,6 +232,43 @@ public class BlueToothUtil {
             setScanMode.invoke(adapter, BluetoothAdapter.SCAN_MODE_CONNECTABLE, 1);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @Description: TODO 获取已连接的蓝牙设备
+     * @param :
+     * @return :
+     * created at 2019/1/9
+     * @author : hechuang
+     */
+    public List<BluetoothDevice> getConnectBt() {
+        List<BluetoothDevice> connectDevices = new ArrayList<>();
+        Class<BluetoothAdapter> bluetoothAdapterClass = BluetoothAdapter.class;//得到BluetoothAdapter的Class对象
+        try {//得到连接状态的方法
+            Method method = bluetoothAdapterClass.getDeclaredMethod("getConnectionState", (Class[]) null);
+            //打开权限
+            method.setAccessible(true);
+            int state = (int) method.invoke(mBluetoothAdapter, (Object[]) null);
+
+            if(state == BluetoothAdapter.STATE_CONNECTED){
+                Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
+                for(BluetoothDevice device : devices){
+                    Method isConnectedMethod = BluetoothDevice.class.getDeclaredMethod("isConnected", (Class[]) null);
+                    method.setAccessible(true);
+                    boolean isConnected = (boolean) isConnectedMethod.invoke(device, (Object[]) null);
+                    if(isConnected){
+                        connectDevices.add(device);
+                    }
+                }
+                return connectDevices;
+            }else{
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
