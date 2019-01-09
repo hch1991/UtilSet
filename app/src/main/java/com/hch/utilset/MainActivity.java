@@ -24,24 +24,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.getConnectBlue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBlueToothUtil.getConnectBt(new ConnectedBluetoothDeviceInterface() {
-                    @Override
-                    public void connectedBluetoothDevice(List<BluetoothDevice> connectedDevices) {
-                        MLog.d("size:"+connectedDevices.size());
-                        if (connectedDevices != null && connectedDevices.size() > 0) {
+                List<BluetoothDevice> connectedDevices = mBlueToothUtil.getConnectBt();
+                if (connectedDevices != null && connectedDevices.size() > 0) {
                             for (BluetoothDevice device : connectedDevices) {
                                 MLog.d(""+device.getBluetoothClass().getMajorDeviceClass());
-                                switch (device.getBluetoothClass().getMajorDeviceClass()){
-
-                                }
-
                                 MLog.d(device.getName() + "," + device.getAddress());
                             }
                         } else {
                             MLog.d("mDevices is null");
                         }
-                    }
-                });
             }
         });
     }

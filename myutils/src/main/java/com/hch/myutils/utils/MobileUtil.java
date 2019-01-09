@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.provider.Settings;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -85,6 +86,17 @@ public class MobileUtil {
             e.printStackTrace();
         }
         return serial;
+    }
+
+    /**
+     * @Description: TODO 获取本机开发者调试模式开关
+     * @param :
+     * @return :
+     * created at 2019/1/9
+     * @author : hechuang
+     */
+    public static boolean getDebugMode(Context context){
+        return (Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ADB_ENABLED, 0) > 0);
     }
 
     /**
