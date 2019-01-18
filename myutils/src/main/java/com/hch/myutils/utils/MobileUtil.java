@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 public class MobileUtil {
 
     private static BatteryReceiver receiver;
-    public static int currentBattery;
+    private static int currentBattery;
 
     /**
      * @Description: TODO 获取cpu核心数
@@ -315,6 +315,34 @@ public class MobileUtil {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         receiver = new BatteryReceiver();
         context.registerReceiver(receiver, filter);
+    }
+
+    /**
+     * @Description: TODO 关闭手机电量监听
+     * @param :
+     * @return :
+     * created at 2019/1/14
+     * @author : hechuang
+     */
+    public static void stopBatteryReceiver(Context context){
+        if(receiver != null){
+            context.unregisterReceiver(receiver);
+            receiver = null;
+        }
+    }
+
+    /**
+     * @Description: TODO 获取当前电量
+     * @param :
+     * @return :
+     * created at 2019/1/14
+     * @author : hechuang
+     */
+    public static int getCurrentBattery(Context context){
+        if(receiver == null){
+            startBatteryReceiver(context);
+        }
+        return currentBattery;
     }
 
     static class BatteryReceiver extends BroadcastReceiver {
