@@ -76,3 +76,5 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * md5工具类 添加 md5大小写方法
 * 文件工具类  方法工具补充
 
+# 2018.1.21
+* 适配8.0以上获取手机序列号
