@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.1.1'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.1.2'
   
   
 # 2018.9.17
