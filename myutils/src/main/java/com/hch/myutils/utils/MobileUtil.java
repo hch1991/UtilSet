@@ -74,7 +74,7 @@ public class MobileUtil {
      * @Description: TODO 获取手机序列号
      * @author : hechuang
      */
-    public static String getSerialNumber(Context context) {
+    public static String getSerialNumber() {
         String serial = null;
         try {
             Class<?> c = Class.forName("android.os.SystemProperties");
