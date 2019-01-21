@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MobileUtil.getSerialNumber(MainActivity.this);
         mBlueToothUtil = new BlueToothUtil(MainActivity.this);
         findViewById(R.id.getConnectBlue).setOnClickListener(new View.OnClickListener() {
             @Override
