@@ -35,11 +35,11 @@ public class MobileUtil {
     private static int currentBattery;
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:33
      * @Description: TODO 获取cpu核心数
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:33
      */
     public static int getNumCores() {
         // Private Class to display only CPU devices in the directory listing
@@ -68,50 +68,41 @@ public class MobileUtil {
     }
 
     /**
-     * @Description: TODO 获取手机序列号
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/24 15:53
+     * @Description: TODO 获取手机序列号
+     * @author : hechuang
      */
     public static String getSerialNumber(Context context) {
         String serial = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //  大于等于24即为7.0及以上执行内容
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                serial = Build.getSerial();
-            }
-        } else {
-            //  低于24即为7.0以下执行内容
-            try {
-                Class<?> c = Class.forName("android.os.SystemProperties");
-                Method get = c.getMethod("get", String.class);
-                serial = (String) get.invoke(c, "ro.serialno");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("get", String.class);
+            serial = (String) get.invoke(c, "ro.serialno");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return serial;
     }
 
     /**
-     * @Description: TODO 获取本机开发者调试模式开关
      * @param :
      * @return :
      * created at 2019/1/9
+     * @Description: TODO 获取本机开发者调试模式开关
      * @author : hechuang
      */
-    public static boolean getDebugMode(Context context){
+    public static boolean getDebugMode(Context context) {
         return (Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ADB_ENABLED, 0) > 0);
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:54
      * @Description: TODO 获取手机mac地址
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:54
      */
     public static String GetLocalMacAddress() {
         try {
@@ -140,11 +131,11 @@ public class MobileUtil {
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:54
      * @Description: TODO 获取手机wifi地址
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:54
      */
     public static String getWifiAddress() {
         try {
@@ -173,80 +164,81 @@ public class MobileUtil {
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2019/1/3 15:16
      * @Description: TODO 获取本机蓝牙名称
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2019/1/3 15:16
      */
-     public static String getBlueToothName() {
+    public static String getBlueToothName() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter.getName();
     }
-    
-    
+
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:56
      * @Description: TODO 获取手机sdk版本
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:56
      */
-    public static int getAndroidSDKVersion(){
+    public static int getAndroidSDKVersion() {
         return android.os.Build.VERSION.SDK_INT;
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/27 17:51
      * @Description: TODO 获取当前应用包名
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/27 17:51
      */
-    
-    public static String getPackageName(Context context){
+
+    public static String getPackageName(Context context) {
         return context.getPackageName();
     }
 
     /**
-     * @Description: TODO 获取当前应用版本号
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用版本号
+     * @author : hechuang
      */
     public static int getVersionCode(Context context) {
         return getPackageInfo(context).versionCode;
     }
+
     /**
-     * @Description: TODO 获取当前应用版本名
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用版本名
+     * @author : hechuang
      */
     public static String getVersionName(Context context) {
         return getPackageInfo(context).versionName;
     }
+
     /**
+     * @param :
+     * @return :
+     * created at 2019/1/3 15:17
      * @Description: TODO 获取固件版本
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2019/1/3 15:17
      */
-    
+
     public static String getFrameworkVersion() {
         return android.os.Build.ID;
     }
-    
+
     /**
-     * @Description: TODO 获取当前应用包信息
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用包信息
+     * @author : hechuang
      */
     public static PackageInfo getPackageInfo(Context context) {
         PackageInfo pi = null;
@@ -265,14 +257,14 @@ public class MobileUtil {
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/11/22 17:14
      * @Description: TODO 根据包名打开指定apk
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/11/22 17:14
      */
 
-    public static void doStartApplicationWithPackageName(Context context,String packagename) {
+    public static void doStartApplicationWithPackageName(Context context, String packagename) {
 
         // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
         PackageInfo packageinfo = null;
@@ -311,42 +303,43 @@ public class MobileUtil {
             context.startActivity(intent);
         }
     }
+
     /**
-     * @Description: TODO 开启手机电量监听
      * @param :
      * @return :
      * created at 2019/1/8
+     * @Description: TODO 开启手机电量监听
      * @author : hechuang
      */
-    public static void  startBatteryReceiver(Context context){
+    public static void startBatteryReceiver(Context context) {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         receiver = new BatteryReceiver();
         context.registerReceiver(receiver, filter);
     }
 
     /**
-     * @Description: TODO 关闭手机电量监听
      * @param :
      * @return :
      * created at 2019/1/14
+     * @Description: TODO 关闭手机电量监听
      * @author : hechuang
      */
-    public static void stopBatteryReceiver(Context context){
-        if(receiver != null){
+    public static void stopBatteryReceiver(Context context) {
+        if (receiver != null) {
             context.unregisterReceiver(receiver);
             receiver = null;
         }
     }
 
     /**
-     * @Description: TODO 获取当前电量
      * @param :
      * @return :
      * created at 2019/1/14
+     * @Description: TODO 获取当前电量
      * @author : hechuang
      */
-    public static int getCurrentBattery(Context context){
-        if(receiver == null){
+    public static int getCurrentBattery(Context context) {
+        if (receiver == null) {
             startBatteryReceiver(context);
         }
         return currentBattery;
