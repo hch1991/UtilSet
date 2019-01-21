@@ -1,6 +1,5 @@
 package com.hch.myutils.utils;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -12,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -76,6 +74,7 @@ public class MobileUtil {
      */
     public static String getSerialNumber() {
         String serial = null;
+        //  低于24即为7.0以下执行内容
         try {
             Class<?> c = Class.forName("android.os.SystemProperties");
             Method get = c.getMethod("get", String.class);
