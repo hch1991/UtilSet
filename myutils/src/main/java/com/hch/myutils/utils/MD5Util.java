@@ -2,7 +2,6 @@ package com.hch.myutils.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -103,57 +102,5 @@ public class MD5Util {
         }
         BigInteger bigInt = new BigInteger(1, digest.digest());
         return bigInt.toString(16);
-    }
-
-    /**
-      * @Description: TODO md5 大写
-      * @author hechuang
-      * @param
-      * @return    返回类型
-      * @create 2019/1/18
-      * @throws
-      */
-    public static String md5Big(String s) {
-        try {
-            // Create MD5 Hash
-            MessageDigest digest = MessageDigest
-                    .getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-
-            return toHexString(messageDigest);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-    /**
-      * @Description: TODO md5小写
-      * @author hechuang
-      * @param
-      * @return    返回类型
-      * @create 2019/1/18
-      * @throws
-      */
-    public static String md5Small(String string) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(
-                    string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
-
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10)
-                hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString();
     }
 }

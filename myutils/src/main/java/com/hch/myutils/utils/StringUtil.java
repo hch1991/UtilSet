@@ -1,11 +1,8 @@
 package com.hch.myutils.utils;
 
-import com.google.gson.Gson;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -326,37 +323,4 @@ public class StringUtil {
         return a[0];
     }
 
-    /**
-     * 将map转化为json字符串
-     *
-     * @param map
-     * @return
-     */
-    public static String MapToJson(Map<? extends Object, ? extends Object> map) {
-        String string = "";
-        if (map != null) {
-            Gson gson = new Gson();
-            string = gson.toJson(map);
-        }
-        return string;
-    }
-
-    /**
-     * 半角转换为全角
-     *
-     * @param input
-     * @return
-     */
-    public static String ToDBC(String input) {
-        char[] c = input.toCharArray();
-        for (int i = 0; i < c.length; i++) {
-            if (c[i] == 12288) {// 全角空格为12288，半角空格为32
-                c[i] = (char) 32;
-                continue;
-            }
-            if (c[i] > 65280 && c[i] < 65375)// 其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差65248
-                c[i] = (char) (c[i] - 65248);
-        }
-        return new String(c);
-    }
 }

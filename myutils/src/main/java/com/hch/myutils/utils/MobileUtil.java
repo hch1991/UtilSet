@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public class MobileUtil {
 
     private static BatteryReceiver receiver;
-    private static int currentBattery;
+    public static int currentBattery;
 
     /**
      * @param :
@@ -315,7 +315,6 @@ public class MobileUtil {
         receiver = new BatteryReceiver();
         context.registerReceiver(receiver, filter);
     }
-
     /**
      * @param :
      * @return :
@@ -343,7 +342,6 @@ public class MobileUtil {
         }
         return currentBattery;
     }
-
     static class BatteryReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
