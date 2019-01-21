@@ -9,6 +9,7 @@ import android.view.View;
 import com.hch.myutils.interfaces.ConnectedBluetoothDeviceInterface;
 import com.hch.myutils.utils.BlueToothUtil;
 import com.hch.myutils.utils.MLog;
+import com.hch.myutils.utils.MobileUtil;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileUtil.getSerialNumber(MainActivity.this);
         mBlueToothUtil = new BlueToothUtil(MainActivity.this);
         findViewById(R.id.getConnectBlue).setOnClickListener(new View.OnClickListener() {
             @Override
