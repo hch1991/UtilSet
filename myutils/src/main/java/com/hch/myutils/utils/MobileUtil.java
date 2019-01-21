@@ -1,5 +1,6 @@
 package com.hch.myutils.utils;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -9,7 +10,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -38,32 +41,27 @@ public class MobileUtil {
      * @return : 
      * created at 2018/10/24 15:33
      */
-    public static int getNumCores(){
+    public static int getNumCores() {
         // Private Class to display only CPU devices in the directory listing
-        class CpuFilter implements FileFilter
-        {
+        class CpuFilter implements FileFilter {
             @Override
-            public boolean accept(File pathname)
-            {
+            public boolean accept(File pathname) {
                 // Check if filename is "cpu", followed by a single digit number
-                if (Pattern.matches("cpu[0-9]", pathname.getName()))
-                {
+                if (Pattern.matches("cpu[0-9]", pathname.getName())) {
                     return true;
                 }
                 return false;
             }
         }
 
-        try
-        {
+        try {
             // Get directory containing CPU info
             File dir = new File("/sys/devices/system/cpu/");
             // Filter to only list the devices we care about
             File[] files = dir.listFiles(new CpuFilter());
             // Return the number of cores (virtual CPU devices)
             return files.length;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // Default to return 1 core
             return 1;
         }
@@ -76,14 +74,23 @@ public class MobileUtil {
      * @return :
      * created at 2018/10/24 15:53
      */
-    public static String getSerialNumber() {
+    public static String getSerialNumber(Context context) {
         String serial = null;
-        try {
-            Class<?> c = Class.forName("android.os.SystemProperties");
-            Method get = c.getMethod("get", String.class);
-            serial = (String) get.invoke(c, "ro.serialno");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //  大于等于24即为7.0及以上执行内容
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                serial = Build.getSerial();
+            }
+        } else {
+            //  低于24即为7.0以下执行内容
+            try {
+                Class<?> c = Class.forName("android.os.SystemProperties");
+                Method get = c.getMethod("get", String.class);
+                serial = (String) get.invoke(c, "ro.serialno");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return serial;
     }
