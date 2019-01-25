@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.1.1'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.2.0'
   
   
 # 2018.9.17
@@ -69,3 +69,8 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 添加测试工程
 * 蓝牙工具类添加蓝牙工具类方法
 * wifi工具类优化wifi工具类扫描结果
+
+# 2018.1.25
+* 添加下载模块 支持断点下载，多任务下载 删除下载
+*添加下载模块测试用例
+
