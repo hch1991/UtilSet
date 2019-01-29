@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.hch.myutils.interfaces.ConnectedBluetoothDeviceInterface;
 import com.hch.myutils.interfaces.ScanBluetoothDeviceInterface;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,7 @@ public class BlueToothUtil {
      * @param :
      * @return :
      * created at 2019/1/3 16:22
-     * @Description: TODO 连接指令蓝牙
+     * @Description: TODO 连接指定蓝牙
      * @author : hechuang
      */
 
@@ -270,5 +271,50 @@ public class BlueToothUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * @Description: TODO 获取本机蓝牙mac地址
+     * @author : hechuang
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:54
+     */
+    public static String getBlueToothMacAddress() {
+        try {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            Field field = bluetoothAdapter.getClass().getDeclaredField("mService");
+            // 参数值为true，禁用访问控制检查
+            field.setAccessible(true);
+            Object bluetoothManagerService = field.get(bluetoothAdapter);
+            if (bluetoothManagerService == null) {
+                return null;
+            }
+            Method method = bluetoothManagerService.getClass().getMethod("getAddress");
+            Object address = method.invoke(bluetoothManagerService);
+            if (address != null && address instanceof String) {
+
+                return (String) address;
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @Description: TODO 获取本机蓝牙名称
+     * @author : hechuang
+     * @param :
+     * @return :
+     * created at 2019/1/3 15:16
+     */
+    public static String getBlueToothName() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.getName();
     }
 }

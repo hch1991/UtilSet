@@ -14,7 +14,9 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WifiAdminUtil {
@@ -358,5 +360,38 @@ public class WifiAdminUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * @Description: TODO 获取本机wifi mac地址
+     * @author : hechuang
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:54
+     */
+    public static String getWifiMacAddress() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:", b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+        }
+        return "02:00:00:00:00:00";
     }
 }
