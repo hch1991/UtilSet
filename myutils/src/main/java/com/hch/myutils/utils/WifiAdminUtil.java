@@ -14,6 +14,8 @@ import android.net.wifi.WifiManager.WifiLock;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hch.myutils.download.DownloadUtil;
+
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +40,20 @@ public class WifiAdminUtil {
     static final int SECURITY_WEP = 1;
     static final int SECURITY_PSK = 2;
     static final int SECURITY_EAP = 3;
+
+    private static WifiAdminUtil wifiAdminUtil = null;
+
+    // 双重检查
+    public static WifiAdminUtil getInstance(Context context) {
+        if (wifiAdminUtil == null) {
+            synchronized (DownloadUtil.class) {
+                if (wifiAdminUtil == null) {
+                    wifiAdminUtil = new WifiAdminUtil(context);
+                }
+            }
+        }
+        return wifiAdminUtil;
+    }
 
     // 构造器
     public WifiAdminUtil(Context context) {
@@ -279,16 +295,18 @@ public class WifiAdminUtil {
      * @param :
      * @return :
      * created at 2019/1/3 17:15
-     * @Description: TODO 连接指令wifi
+     * @Description: TODO 连接指定wifi
      * @author : hechuang
      */
-    public void connectWifi(String ssid, String password, int wifiType) {
+    public boolean connectWifi(String ssid, String password, int wifiType) {
         Log.d("Cache_Log", "ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
+        MLog.d("ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
         int netId = mWifiManager.addNetwork(createWifiConfig(ssid, password, wifiType));
         boolean enable = mWifiManager.enableNetwork(netId, true);
-        Log.d("Cache_Log", "enable: " + enable);
+        MLog.d( "enable: " + enable);
         boolean reconnect = mWifiManager.reconnect();
-        Log.d("Cache_Log", "reconnect: " + reconnect);
+        MLog.d("reconnect: " + reconnect);
+        return reconnect;
     }
 
     /**

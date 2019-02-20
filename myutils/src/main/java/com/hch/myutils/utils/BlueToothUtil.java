@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hch.myutils.download.DownloadUtil;
 import com.hch.myutils.interfaces.ConnectedBluetoothDeviceInterface;
 import com.hch.myutils.interfaces.ScanBluetoothDeviceInterface;
 
@@ -40,7 +41,21 @@ public class BlueToothUtil {
     private ScanBluetoothDeviceInterface mScanBluetoothDeviceInterface;
     private BluetoothDevice mConnectDevice;
 
-    public BlueToothUtil(Context context) {
+    private static BlueToothUtil blueToothUtil = null;
+
+    // 双重检查
+    public static BlueToothUtil getInstance(Context context) {
+        if (blueToothUtil == null) {
+            synchronized (DownloadUtil.class) {
+                if (blueToothUtil == null) {
+                    blueToothUtil = new BlueToothUtil(context);
+                }
+            }
+        }
+        return blueToothUtil;
+    }
+
+    private BlueToothUtil(Context context) {
         mContext = context;
         // 4.0以上才支持HID模式
         if (Build.VERSION.SDK_INT >= 17) {
