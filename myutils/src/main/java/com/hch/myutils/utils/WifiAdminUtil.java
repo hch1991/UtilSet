@@ -56,7 +56,7 @@ public class WifiAdminUtil {
     }
 
     // 构造器
-    public WifiAdminUtil(Context context) {
+    private WifiAdminUtil(Context context) {
         // 取得WifiManager对象
         mWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);

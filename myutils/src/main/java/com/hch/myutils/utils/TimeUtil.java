@@ -1,5 +1,9 @@
 package com.hch.myutils.utils;
 
+import android.os.Handler;
+
+import com.hch.myutils.interfaces.CountDownTimeListener;
+
 import java.util.Calendar;
 
 /**
@@ -50,7 +54,7 @@ public class TimeUtil {
      * @param milliSecond
      * @return
      */
-    private static long getSpeDate(int hour, int minute, int second,
+    public static long getSpeDate(int hour, int minute, int second,
                                    int milliSecond) {
 
         Calendar cal = Calendar.getInstance();
@@ -65,4 +69,35 @@ public class TimeUtil {
 
         return cal.getTimeInMillis();
     }
+
+    private static int countDownNum;
+    private static CountDownTimeListener mCountDownTimeListener;
+
+    /**
+      * @Description: TODO 开启倒计时
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/2/22
+      * @throws
+      */
+    public static void startCountDown(int timeNum, CountDownTimeListener countDownTimeListener){
+        countDownNum = timeNum;
+        mCountDownTimeListener = countDownTimeListener;
+        handler.postDelayed(runnable, 1000);
+    }
+
+
+
+    private static Handler handler = new Handler();
+    private static Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            countDownNum--;
+            if(countDownNum > -1){
+                mCountDownTimeListener.surplusTime(countDownNum);
+                handler.postDelayed(this, 1000);
+            }
+        }
+    };
 }
