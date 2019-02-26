@@ -77,3 +77,4 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 # 2018.2.20
 * 优化工具类调用
 * wifi工具类和蓝牙工具类优化 实现单例
+* 添加打字机效果
