@@ -1,5 +1,6 @@
 package com.hch.myutils.utils;
 
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,9 +11,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.provider.Settings;
+import android.text.format.Formatter;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
@@ -32,49 +37,44 @@ public class MobileUtil {
     private static int currentBattery;
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:33
      * @Description: TODO 获取cpu核心数
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:33
      */
-    public static int getNumCores(){
+    public static int getNumCores() {
         // Private Class to display only CPU devices in the directory listing
-        class CpuFilter implements FileFilter
-        {
+        class CpuFilter implements FileFilter {
             @Override
-            public boolean accept(File pathname)
-            {
+            public boolean accept(File pathname) {
                 // Check if filename is "cpu", followed by a single digit number
-                if (Pattern.matches("cpu[0-9]", pathname.getName()))
-                {
+                if (Pattern.matches("cpu[0-9]", pathname.getName())) {
                     return true;
                 }
                 return false;
             }
         }
 
-        try
-        {
+        try {
             // Get directory containing CPU info
             File dir = new File("/sys/devices/system/cpu/");
             // Filter to only list the devices we care about
             File[] files = dir.listFiles(new CpuFilter());
             // Return the number of cores (virtual CPU devices)
             return files.length;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // Default to return 1 core
             return 1;
         }
     }
 
     /**
-     * @Description: TODO 获取手机序列号
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/24 15:53
+     * @Description: TODO 获取手机序列号
+     * @author : hechuang
      */
     public static String getSerialNumber() {
         String serial = null;
@@ -89,77 +89,79 @@ public class MobileUtil {
     }
 
     /**
-     * @Description: TODO 获取本机开发者调试模式开关
      * @param :
      * @return :
      * created at 2019/1/9
+     * @Description: TODO 获取本机开发者调试模式开关
      * @author : hechuang
      */
-    public static boolean getDebugMode(Context context){
+    public static boolean getDebugMode(Context context) {
         return (Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ADB_ENABLED, 0) > 0);
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/24 15:56
      * @Description: TODO 获取手机sdk版本
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/24 15:56
      */
-    public static int getAndroidSDKVersion(){
+    public static int getAndroidSDKVersion() {
         return android.os.Build.VERSION.SDK_INT;
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/10/27 17:51
      * @Description: TODO 获取当前应用包名
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/10/27 17:51
      */
-    
-    public static String getPackageName(Context context){
+
+    public static String getPackageName(Context context) {
         return context.getPackageName();
     }
 
     /**
-     * @Description: TODO 获取当前应用版本号
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用版本号
+     * @author : hechuang
      */
     public static int getVersionCode(Context context) {
         return getPackageInfo(context).versionCode;
     }
+
     /**
-     * @Description: TODO 获取当前应用版本名
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用版本名
+     * @author : hechuang
      */
     public static String getVersionName(Context context) {
         return getPackageInfo(context).versionName;
     }
+
     /**
+     * @param :
+     * @return :
+     * created at 2019/1/3 15:17
      * @Description: TODO 获取固件版本
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2019/1/3 15:17
      */
-    
+
     public static String getFrameworkVersion() {
         return android.os.Build.ID;
     }
-    
+
     /**
-     * @Description: TODO 获取当前应用包信息
-     * @author : hechuang
      * @param :
      * @return :
      * created at 2018/10/27 17:52
+     * @Description: TODO 获取当前应用包信息
+     * @author : hechuang
      */
     public static PackageInfo getPackageInfo(Context context) {
         PackageInfo pi = null;
@@ -178,14 +180,14 @@ public class MobileUtil {
     }
 
     /**
+     * @param :
+     * @return :
+     * created at 2018/11/22 17:14
      * @Description: TODO 根据包名打开指定apk
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/11/22 17:14
      */
 
-    public static void doStartApplicationWithPackageName(Context context,String packagename) {
+    public static void doStartApplicationWithPackageName(Context context, String packagename) {
 
         // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
         PackageInfo packageinfo = null;
@@ -224,45 +226,139 @@ public class MobileUtil {
             context.startActivity(intent);
         }
     }
+
     /**
-     * @Description: TODO 开启手机电量监听
      * @param :
      * @return :
      * created at 2019/1/8
+     * @Description: TODO 开启手机电量监听
      * @author : hechuang
      */
-    public static void  startBatteryReceiver(Context context){
+    public static void startBatteryReceiver(Context context) {
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         receiver = new BatteryReceiver();
         context.registerReceiver(receiver, filter);
     }
 
     /**
-     * @Description: TODO 关闭手机电量监听
      * @param :
      * @return :
      * created at 2019/1/14
+     * @Description: TODO 关闭手机电量监听
      * @author : hechuang
      */
-    public static void stopBatteryReceiver(Context context){
-        if(receiver != null){
+    public static void stopBatteryReceiver(Context context) {
+        if (receiver != null) {
             context.unregisterReceiver(receiver);
             receiver = null;
         }
     }
 
     /**
-     * @Description: TODO 获取当前电量
      * @param :
      * @return :
      * created at 2019/1/14
+     * @Description: TODO 获取当前电量
      * @author : hechuang
      */
-    public static int getCurrentBattery(Context context){
-        if(receiver == null){
+    public static int getCurrentBattery(Context context) {
+        if (receiver == null) {
             startBatteryReceiver(context);
         }
         return currentBattery;
+    }
+
+    /**
+     * * 获取android当前可用运行内存大小
+     * * @param context
+     * *
+     */
+    public static String getAvailMemory(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(mi);
+// mi.availMem; 当前系统的可用内存
+        return Formatter.formatFileSize(context, mi.availMem);// 将获取的内存大小规格化
+    }
+
+
+    /**
+     * * 获取android总运行内存大小
+     * * @param context
+     * *
+     */
+    public static String getTotalMemory(Context context) {
+        String str1 = "/proc/meminfo";// 系统内存信息文件
+        String str2;
+        String[] arrayOfString;
+        long initial_memory = 0;
+        try {
+            FileReader localFileReader = new FileReader(str1);
+            BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
+            str2 = localBufferedReader.readLine();// 读取meminfo第一行，系统总内存大小
+            arrayOfString = str2.split("\\s+");
+            for (String num : arrayOfString) {
+                MLog.d(str2);
+                MLog.d(num);
+            }
+            // 获得系统总内存，单位是KB
+            int i = Integer.valueOf(arrayOfString[1]).intValue();
+            //int值乘以1024转换为long类型
+            initial_memory = new Long((long) i * 1024);
+            localBufferedReader.close();
+        } catch (IOException e) {
+        }
+        return Formatter.formatFileSize(context, initial_memory);// Byte转换为KB或者MB，内存大小规格化
+    }
+
+    /**
+     * 获取电池容量 mAh
+     * <p>
+     * 源头文件:frameworks/base/core/res\res/xml/power_profile.xml
+     * <p>
+     * Java 反射文件：frameworks\base\core\java\com\android\internal\os\PowerProfile.java
+     */
+    public static String getBatteryCapacity(Context context) {
+        Object mPowerProfile;
+        double batteryCapacity = 0;
+        final String POWER_PROFILE_CLASS = "com.android.internal.os.PowerProfile";
+        try {
+            mPowerProfile = Class.forName(POWER_PROFILE_CLASS).getConstructor(Context.class).newInstance(context);
+            batteryCapacity = (double) Class.forName(POWER_PROFILE_CLASS).getMethod("getBatteryCapacity").invoke(mPowerProfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(batteryCapacity + " mAh");
+    }
+
+    /**
+      * @Description: TODO 获取手机型号
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/12
+      * @throws
+      */
+    public static String[] getCpuInfo() {
+        String str1 = "/proc/cpuinfo";
+        String str2="";
+        String[] cpuInfo={"",""};
+        String[] arrayOfString;
+        try {
+            FileReader fr = new FileReader(str1);
+            BufferedReader localBufferedReader = new BufferedReader(fr, 8192);
+            str2 = localBufferedReader.readLine();
+            arrayOfString = str2.split("\\s+");
+            for (int i = 2; i < arrayOfString.length; i++) {
+                cpuInfo[0] = cpuInfo[0] + arrayOfString[i] + " ";
+            }
+            str2 = localBufferedReader.readLine();
+            arrayOfString = str2.split("\\s+");
+            cpuInfo[1] += arrayOfString[2];
+            localBufferedReader.close();
+        } catch (IOException e) {
+        }
+        return cpuInfo;
     }
 
     static class BatteryReceiver extends BroadcastReceiver {

@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/sheet_top_selector"
-        android:onClick="on_click"
         android:paddingBottom="10dip"
         android:paddingTop="10dip"
         android:text="图库"
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/sheet_center_selector"
-        android:onClick="on_click"
         android:paddingBottom="10dip"
         android:paddingTop="10dip"
         android:textSize="16sp" />
@@ -38,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/sheet_bottom_selector"
-        android:onClick="on_click"
         android:paddingBottom="10dip"
         android:paddingTop="10dip"
         android:textSize="16sp" />
@@ -49,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:background="@drawable/sheet_cancel_selector"
-        android:onClick="on_click"
         android:paddingBottom="10dip"
         android:paddingTop="10dip"
         android:textSize="16sp" />

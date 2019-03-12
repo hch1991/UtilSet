@@ -46,7 +46,7 @@ public class BlueToothUtil {
     // 双重检查
     public static BlueToothUtil getInstance(Context context) {
         if (blueToothUtil == null) {
-            synchronized (DownloadUtil.class) {
+            synchronized (BlueToothUtil.class) {
                 if (blueToothUtil == null) {
                     blueToothUtil = new BlueToothUtil(context);
                 }

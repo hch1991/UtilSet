@@ -52,7 +52,7 @@ public class PrinterTextView extends AppCompatTextView {
      */
     private int printProgress = 0;
     /**
-     * 打字进度
+     * 打字进度监听
      */
     private PrinterTextviewListener mPrinterTextviewListener;
 

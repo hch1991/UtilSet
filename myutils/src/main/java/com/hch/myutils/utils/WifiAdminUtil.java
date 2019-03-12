@@ -46,7 +46,7 @@ public class WifiAdminUtil {
     // 双重检查
     public static WifiAdminUtil getInstance(Context context) {
         if (wifiAdminUtil == null) {
-            synchronized (DownloadUtil.class) {
+            synchronized (WifiAdminUtil.class) {
                 if (wifiAdminUtil == null) {
                     wifiAdminUtil = new WifiAdminUtil(context);
                 }
