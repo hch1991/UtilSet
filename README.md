@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.2.3'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.2.5'
   
   
 # 2018.9.17
@@ -78,3 +78,8 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 优化工具类调用
 * wifi工具类和蓝牙工具类优化 实现单例
 * 添加打字机效果
+
+# 2018.2.20
+* 修改bug
+* 手机工具类添加获取运行内存 cpu型号  电池容量等方法
+* wifi工具类添加注册监听wifi状态和连接状态监听回调
