@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.hch.myutils.download.DownloadUtil;
+import com.hch.myutils.interfaces.BlueDeviceConnectStateInterface;
 import com.hch.myutils.interfaces.ConnectedBluetoothDeviceInterface;
 import com.hch.myutils.interfaces.ScanBluetoothDeviceInterface;
 
@@ -33,12 +34,14 @@ public class BlueToothUtil {
 
     private BluetoothAdapter mBluetoothAdapter;
     private BlueBroadcastReceiver mBroadcastReceiver;
+    private BlueDeviceConnectReceiver mBlueDeviceConnectReceiver;
     private String HID_NAME = "";  // 连接的蓝牙设备名
     private String HID_ADDR = "";  //连接的蓝牙设备地址
     private HidInputUtil mHidInputUtil;
     private HidVideoUtil mHidVideoUtil;
     private Context mContext;
     private ScanBluetoothDeviceInterface mScanBluetoothDeviceInterface;
+    private BlueDeviceConnectStateInterface mBlueDeviceConnectStateInterface;
     private BluetoothDevice mConnectDevice;
 
     private static BlueToothUtil blueToothUtil = null;
@@ -97,6 +100,33 @@ public class BlueToothUtil {
     }
 
     /**
+      * @Description: TODO  强制打开蓝牙
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/20
+      * @throws
+      */
+    public void openBlueTooth(){
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter.enable();
+        }
+    }
+    /**
+     * @Description: TODO  强制关闭蓝牙
+     * @author hechuang
+     * @param
+     * @return    返回类型
+     * @create 2019/3/20
+     * @throws
+     */
+    public void closeBlueTooth(){
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter.disable();
+        }
+    }
+
+    /**
      * @param :
      * @return :
      * created at 2019/1/3 15:32
@@ -126,15 +156,30 @@ public class BlueToothUtil {
         intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
         intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        intentFilter.addAction("android.bluetooth.input.profile.action.CONNECTION_STATE_CHANGED");
         mContext.registerReceiver(mBroadcastReceiver, intentFilter);
         // 先判断蓝牙是否在开启扫描中 如果没有开启则开启扫描  开启了则不管
         if (!mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.startDiscovery();
             mScanBluetoothDeviceInterface.scanStatus(true);
         }
+    }
+
+    /**
+      * @Description: TODO 添加蓝牙连接状态监听
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/20
+      * @throws
+      */
+    public void addBlueDeviceConnectListener(BlueDeviceConnectStateInterface blueDeviceConnectStateInterface){
+        mBlueDeviceConnectStateInterface = blueDeviceConnectStateInterface;
+        mBlueDeviceConnectReceiver = new BlueDeviceConnectReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        mContext.registerReceiver(mBlueDeviceConnectReceiver, intentFilter);
     }
 
     /**
@@ -212,19 +257,26 @@ public class BlueToothUtil {
                         }
                     }
                 }
-            } else if (action.equals("android.bluetooth.input.profile.action.CONNECTION_STATE_CHANGED")) {
-                int state = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, 0);
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.i(TAG, "state=" + state + ",device=" + device);
-//                if(state == BluetoothProfile.STATE_CONNECTED){
-//                    Toast.makeText(MainActivity.this, R.string.connnect_success, Toast.LENGTH_LONG).show();
-//                } else if(state == BluetoothProfile.STATE_DISCONNECTED){
-//                    Toast.makeText(MainActivity.this, R.string.disconnected, Toast.LENGTH_LONG).show();
-//                }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 MLog.d("扫描完毕");
                 mScanBluetoothDeviceInterface.scanStatus(false);
 //                startDiscovery();
+            }
+        }
+    }
+
+    private class BlueDeviceConnectReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            if(action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)){
+                MLog.d("连接上了:"+device.getName());
+                mBlueDeviceConnectStateInterface.blueDeviceStateChanged(true,device);
+            }else if(action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)){
+                MLog.d("连接断开了:"+device.getName());
+                mBlueDeviceConnectStateInterface.blueDeviceStateChanged(false,device);
             }
         }
     }
