@@ -14,6 +14,8 @@ import java.util.Calendar;
  */
 public class TimeUtil {
 
+    private static boolean isStart = false;
+
     public static boolean isCurrentInTimeScope(int beginHour, int endHour) {
         return isCurrentInTimeScope(beginHour,0,endHour,0);
     }
@@ -83,8 +85,10 @@ public class TimeUtil {
       */
     public static void startCountDown(int timeNum, CountDownTimeListener countDownTimeListener){
         countDownNum = timeNum;
-        mCountDownTimeListener = countDownTimeListener;
-        handler.postDelayed(runnable, 1000);
+        if(!isStart){
+            mCountDownTimeListener = countDownTimeListener;
+            handler.postDelayed(runnable, 1000);
+        }
     }
     /**
       * @Description: TODO 停止倒计时
@@ -95,6 +99,7 @@ public class TimeUtil {
       * @throws
       */
     public static  void stopCountDown(){
+        isStart = false;
         handler.removeCallbacks(runnable);
     }
 
@@ -105,11 +110,25 @@ public class TimeUtil {
         public void run() {
             countDownNum--;
             if(countDownNum > -1){
+                isStart = true;
                 mCountDownTimeListener.surplusTime(countDownNum);
                 handler.postDelayed(this, 1000);
             }else{
+                isStart = false;
                 handler.removeCallbacks(this);
             }
         }
     };
+
+    /**
+      * @Description: TODO 获取定时器是否开启
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/29
+      * @throws
+      */
+    public static boolean isStart(){
+        return isStart;
+    }
 }
