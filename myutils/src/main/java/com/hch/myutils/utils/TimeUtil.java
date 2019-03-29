@@ -76,7 +76,7 @@ public class TimeUtil {
     private static CountDownTimeListener mCountDownTimeListener;
 
     /**
-      * @Description: TODO 开启倒计时
+      * @Description: TODO 开启倒计时 重复调用则是重置计时器
       * @author hechuang
       * @param
       * @return    返回类型
