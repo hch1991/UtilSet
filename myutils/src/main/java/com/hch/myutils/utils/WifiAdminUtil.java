@@ -425,8 +425,9 @@ public class WifiAdminUtil {
         mWifiConnectStatusListener = wifiConnectStatusListener;
         broadcast = new WifiChangeBroadcast();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION); // wifi
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION); // wifi状态
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION); // wifi
+        intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);//wifi密码错误
         context.registerReceiver(broadcast, intentFilter);
     }
 
@@ -451,6 +452,13 @@ public class WifiAdminUtil {
                     } else if (state == NetworkInfo.State.CONNECTED) {
                         mWifiConnectStatusListener.wifiConnectInfo(true, wifiInfo);
                     }
+                }
+            }
+            if(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)){
+                int linkWifiResult = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 123);
+                if (linkWifiResult == WifiManager.ERROR_AUTHENTICATING) {
+                    // 密码错误时 清空networkId的相关信息
+                    mWifiConnectStatusListener.wifiStatus(404);
                 }
             }
         }

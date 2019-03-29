@@ -10,8 +10,11 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.BatteryManager;
 import android.provider.Settings;
 import android.text.format.Formatter;
+
+import com.hch.myutils.interfaces.BatteryChangeListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static android.content.Context.BATTERY_SERVICE;
+
 /**
  * @author hechuang
  * @ClassName: M.java
@@ -34,7 +39,8 @@ import java.util.regex.Pattern;
 public class MobileUtil {
 
     private static BatteryReceiver receiver;
-    private static int currentBattery;
+    private static int currentBattery = 100;
+    private static BatteryChangeListener mBatteryChangeListener;
 
     /**
      * @param :
@@ -234,10 +240,13 @@ public class MobileUtil {
      * @Description: TODO 开启手机电量监听
      * @author : hechuang
      */
-    public static void startBatteryReceiver(Context context) {
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        receiver = new BatteryReceiver();
-        context.registerReceiver(receiver, filter);
+    public static void startBatteryReceiver(Context context,BatteryChangeListener batteryChangeListener) {
+        mBatteryChangeListener = batteryChangeListener;
+        if(receiver == null){
+            IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            receiver = new BatteryReceiver();
+            context.registerReceiver(receiver, filter);
+        }
     }
 
     /**
@@ -250,6 +259,7 @@ public class MobileUtil {
     public static void stopBatteryReceiver(Context context) {
         if (receiver != null) {
             context.unregisterReceiver(receiver);
+            mBatteryChangeListener = null;
             receiver = null;
         }
     }
@@ -261,10 +271,12 @@ public class MobileUtil {
      * @Description: TODO 获取当前电量
      * @author : hechuang
      */
-    public static int getCurrentBattery(Context context) {
-        if (receiver == null) {
-            startBatteryReceiver(context);
+    public static int getCurrentBattery(Context context, BatteryChangeListener batteryChangeListener) {
+        if (batteryChangeListener != null) {
+            startBatteryReceiver(context,batteryChangeListener);
         }
+        BatteryManager batteryManager = (BatteryManager) context.getSystemService(BATTERY_SERVICE);
+        currentBattery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
         return currentBattery;
     }
 
@@ -287,7 +299,7 @@ public class MobileUtil {
      * * @param context
      * *
      */
-    public static String getTotalMemory(Context context) {
+    public static long getTotalMemory(Context context) {
         String str1 = "/proc/meminfo";// 系统内存信息文件
         String str2;
         String[] arrayOfString;
@@ -308,7 +320,18 @@ public class MobileUtil {
             localBufferedReader.close();
         } catch (IOException e) {
         }
-        return Formatter.formatFileSize(context, initial_memory);// Byte转换为KB或者MB，内存大小规格化
+        return initial_memory;
+    }
+    /**
+      * @Description: TODO 获取android总运行内存大小(格式化)
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/29
+      * @throws
+      */
+    public static String getTotalMemoryFormat(Context context) {
+        return Formatter.formatFileSize(context, getTotalMemory(context));// Byte转换为KB或者MB，内存大小规格化
     }
 
     /**
@@ -367,6 +390,7 @@ public class MobileUtil {
             int current = intent.getExtras().getInt("level");// 获得当前电量
             int total = intent.getExtras().getInt("scale");// 获得总电量
             currentBattery = current * 100 / total;
+            mBatteryChangeListener.BatteryChange(currentBattery);
         }
     }
 }

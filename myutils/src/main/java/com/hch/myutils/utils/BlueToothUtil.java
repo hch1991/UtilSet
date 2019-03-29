@@ -166,6 +166,20 @@ public class BlueToothUtil {
     }
 
     /**
+      * @Description: TODO 取消蓝牙扫描监听
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/20
+      * @throws
+      */
+    public void stopScanBlueDevice(){
+        if(mBroadcastReceiver != null){
+            mBluetoothAdapter.cancelDiscovery();
+            mContext.unregisterReceiver(mBroadcastReceiver);
+        }
+    }
+    /**
       * @Description: TODO 添加蓝牙连接状态监听
       * @author hechuang
       * @param
@@ -180,6 +194,20 @@ public class BlueToothUtil {
         intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         mContext.registerReceiver(mBlueDeviceConnectReceiver, intentFilter);
+    }
+
+    /**
+      * @Description: TODO 移除蓝牙连接状态监听
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/20
+      * @throws
+      */
+    public void removeBlueDeviceConnectListener(){
+        if(mBlueDeviceConnectReceiver != null){
+            mContext.unregisterReceiver(mBlueDeviceConnectReceiver);
+        }
     }
 
     /**

@@ -86,7 +86,17 @@ public class TimeUtil {
         mCountDownTimeListener = countDownTimeListener;
         handler.postDelayed(runnable, 1000);
     }
-
+    /**
+      * @Description: TODO 停止倒计时
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/3/29
+      * @throws
+      */
+    public static  void stopCountDown(){
+        handler.removeCallbacks(runnable);
+    }
 
 
     private static Handler handler = new Handler();
@@ -97,6 +107,8 @@ public class TimeUtil {
             if(countDownNum > -1){
                 mCountDownTimeListener.surplusTime(countDownNum);
                 handler.postDelayed(this, 1000);
+            }else{
+                handler.removeCallbacks(this);
             }
         }
     };
