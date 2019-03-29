@@ -390,7 +390,9 @@ public class MobileUtil {
             int current = intent.getExtras().getInt("level");// 获得当前电量
             int total = intent.getExtras().getInt("scale");// 获得总电量
             currentBattery = current * 100 / total;
-            mBatteryChangeListener.BatteryChange(currentBattery);
+            if(mBatteryChangeListener != null){
+                mBatteryChangeListener.BatteryChange(currentBattery);
+            }
         }
     }
 }
