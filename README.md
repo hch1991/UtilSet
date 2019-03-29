@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.2.6'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.2.7'
   
   
 # 2018.9.17
@@ -86,3 +86,9 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 
 # 2018.3.20
 * 添加蓝牙连接状态监听，添加开关蓝牙接口
+
+# 2018.3.29
+* wifi工具类添加密码错误监听  
+* 手机工具类添加电量监听 运行内存修复 
+* 蓝牙工具类添加蓝牙扫描监听和取消  
+* 时间工具类修复倒计时方法 添加停止倒计时方法
