@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.hch.myutils.interfaces.PermissionsCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class CheckUtil {
      * @author hechuang
      * created at 2018/5/16 10:18
      */
-    public static void verifyOnePermission(Activity activity, String checkPermission, int permissionsRequest) {
+    public static void verifyOnePermission(Activity activity, String checkPermission, int permissionsRequest, PermissionsCallback permissionsCallback) {
         // 检查是否有指定权限
         int permission = ActivityCompat.checkSelfPermission(activity, checkPermission);
         //此权限是不是没有授权  PackageManager.PERMISSION_GRANTED表示已授权
@@ -81,8 +82,10 @@ public class CheckUtil {
             //没有权限，像用户申请授权
             ActivityCompat.requestPermissions(activity, new String[]{checkPermission},
                     permissionsRequest);
+            permissionsCallback.hasPermissions(false);
         } else {
             MLog.d("已有权限");
+            permissionsCallback.hasPermissions(true);
         }
 
     }
@@ -93,7 +96,7 @@ public class CheckUtil {
      * @author : hechuang
      * created at 2018/5/16 10:38
      */
-    public static void verifyMorePermission(Activity activity, String[] checkPermission, int permissionsRequest){
+    public static void verifyMorePermission(Activity activity, String[] checkPermission, int permissionsRequest, PermissionsCallback permissionsCallback){
         List<String> mPermissionList = new ArrayList<>();
         for (int i = 0; i < checkPermission.length; i++) {
             if (ActivityCompat.checkSelfPermission(activity, checkPermission[i]) != PackageManager.PERMISSION_GRANTED) {
@@ -102,9 +105,11 @@ public class CheckUtil {
         }
         if (mPermissionList.isEmpty()) {//未授予的权限为空，表示都授予了
             MLog.d("已经授权");
+            permissionsCallback.hasPermissions(true);
         } else {//请求权限方法
             String[] permissions = mPermissionList.toArray(new String[mPermissionList.size()]);//将List转为数组
             ActivityCompat.requestPermissions(activity, permissions, permissionsRequest);
+            permissionsCallback.hasPermissions(false);
         }
     }
 
