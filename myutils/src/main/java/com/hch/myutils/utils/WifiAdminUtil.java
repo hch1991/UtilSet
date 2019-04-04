@@ -298,6 +298,10 @@ public class WifiAdminUtil {
         disconnectWifi(netId);
         mWifiManager.removeNetwork(netId);
     }
+    //断开当前连接的wifi
+    public void removeCurrentConnectWifi(){
+        disconnectWifi(getNetworkId());
+    }
 
     /**
      * @param :
@@ -307,6 +311,7 @@ public class WifiAdminUtil {
      * @author : hechuang
      */
     public boolean connectWifi(String ssid, String password, int wifiType) {
+        removeCurrentConnectWifi();
         Log.d("Cache_Log", "ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
         MLog.d("ssid: " + ssid + "password: " + password + "wifiType: " + wifiType);
         int netId = mWifiManager.addNetwork(createWifiConfig(ssid, password, wifiType));
@@ -430,7 +435,7 @@ public class WifiAdminUtil {
         intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);//wifi密码错误
         context.registerReceiver(broadcast, intentFilter);
     }
-
+    int wifiState = -1;//0 连接断开 1 连接成功  2 密码错误
     private class WifiChangeBroadcast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -448,9 +453,15 @@ public class WifiAdminUtil {
                     NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
                     NetworkInfo.State state = networkInfo.getState();
                     if (state == NetworkInfo.State.DISCONNECTED) {
-                        mWifiConnectStatusListener.wifiConnectInfo(false, null);
+                        if(wifiState != 0){
+                            mWifiConnectStatusListener.wifiConnectInfo(false, null);
+                        }
+                        wifiState = 0;
                     } else if (state == NetworkInfo.State.CONNECTED) {
-                        mWifiConnectStatusListener.wifiConnectInfo(true, wifiInfo);
+                        if(wifiState != 1){
+                            mWifiConnectStatusListener.wifiConnectInfo(true, wifiInfo);
+                        }
+                        wifiState = 1;
                     }
                 }
             }
@@ -458,7 +469,10 @@ public class WifiAdminUtil {
                 int linkWifiResult = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 123);
                 if (linkWifiResult == WifiManager.ERROR_AUTHENTICATING) {
                     // 密码错误时 清空networkId的相关信息
-                    mWifiConnectStatusListener.wifiStatus(404);
+                    if(wifiState != 2){
+                        mWifiConnectStatusListener.wifiStatus(404);
+                    }
+                    wifiState = 2;
                 }
             }
         }
