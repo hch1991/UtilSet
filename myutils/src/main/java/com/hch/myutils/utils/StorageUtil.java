@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,6 +171,24 @@ public class StorageUtil {
         }
         return lResult;
     }
+
+    public String getExtSDCardPathForAndroid7(Context context){
+		try {
+			StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+			// 7.0才有的方法
+			List<StorageVolume> storageVolumes = storageManager.getStorageVolumes();
+			Class<?> volumeClass = Class.forName("android.os.storage.StorageVolume");
+			Method getPath = volumeClass.getDeclaredMethod("getPath");
+			getPath.setAccessible(true);
+			if(storageVolumes.size()>1){
+				StorageVolume storageVolume = storageVolumes.get(1);
+				String mPath = (String) getPath.invoke(storageVolume);
+				return mPath;
+			}
+		}catch (Exception e){
+		}
+		return "";
+	}
 
 	private static DecimalFormat fileIntegerFormat = new DecimalFormat("#0");
 	private static DecimalFormat fileDecimalFormat = new DecimalFormat("#0.#");

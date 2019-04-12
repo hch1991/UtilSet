@@ -23,19 +23,20 @@ public class LogcatHelper {
     private static String PATH_LOGCAT;
     private LogDumper mLogDumper = null;
     private int mPId;
+    private Context mContext;
 
     /**
      *
      * 初始化目录
      *
      * */
-    public void init(Context context) {
+    private void init() {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             PATH_LOGCAT = Environment.getExternalStorageDirectory()
                     .getAbsolutePath();
         } else {// 如果SD卡不存在，就保存到本应用的目录下
-            PATH_LOGCAT = context.getFilesDir().getAbsolutePath();
+            PATH_LOGCAT = mContext.getFilesDir().getAbsolutePath();
         }
         File file = new File(PATH_LOGCAT);
         if (!file.exists()) {
@@ -51,7 +52,8 @@ public class LogcatHelper {
     }
 
     private LogcatHelper(Context context) {
-        init(context);
+        mContext = context;
+        init();
         mPId = android.os.Process.myPid();
     }
 
