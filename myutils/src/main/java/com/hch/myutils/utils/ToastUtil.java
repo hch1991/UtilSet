@@ -21,20 +21,20 @@ public class ToastUtil {
     public static void showLongToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
-    public static void showServiceShortToast(final Context context, String message) {
+    public static void showServiceShortToast(final Context context, final String message) {
         Handler handler=new Handler(Looper.getMainLooper());
         handler.post(new Runnable(){
             public void run(){
-                Toast.makeText(context, "Service is off!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public static void showServiceLongToast(final Context context, String message) {
+    public static void showServiceLongToast(final Context context, final String message) {
         Handler handler=new Handler(Looper.getMainLooper());
         handler.post(new Runnable(){
             public void run(){
-                Toast.makeText(context, "Service is off!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -53,13 +53,19 @@ public class LogcatHelper {
 
     private LogcatHelper(Context context) {
         mContext = context;
-        init();
         mPId = android.os.Process.myPid();
     }
 
     public void start(String filePath) {
-        if(filePath != null)
+        if(filePath != null){
             PATH_LOGCAT = filePath;
+            File file = new File(PATH_LOGCAT);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+        }else{
+            init();
+        }
         if (mLogDumper == null)
             mLogDumper = new LogDumper(String.valueOf(mPId), PATH_LOGCAT);
         mLogDumper.start();
