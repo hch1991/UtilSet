@@ -412,6 +412,9 @@ public class DownloadUtil {
     }
 
     private DownloadFileInfoObj convertObj(DownloadFileInfo d) {
+        if(d == null){
+            return null;
+        }
         return new DownloadFileInfoObj(d.getUrl(), d.getFileSizeLong(), d.getETag(), d.getLastModified(), d.getAcceptRangeType(), d.getFileDir(), d.getTempFileName(), d.getCreateDatetime(), d.getDownloadedSizeLong(), d.getTempFileName(), d.getStatus());
     }
     private List<DownloadFileInfoObj> convertObjs(List<DownloadFileInfo> ds){
