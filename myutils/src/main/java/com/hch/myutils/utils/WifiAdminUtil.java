@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -40,6 +41,7 @@ public class WifiAdminUtil {
     WifiLock mWifiLock;
     WifiConnectStatusListener mWifiConnectStatusListener;
     WifiChangeBroadcast broadcast;
+    private Context mContext;
 
     /**
      * These values are matched in string arrays -- changes must be kept in sync
@@ -65,6 +67,7 @@ public class WifiAdminUtil {
 
     // 构造器
     private WifiAdminUtil(Context context) {
+        this.mContext = context;
         // 取得WifiManager对象
         mWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
@@ -112,6 +115,57 @@ public class WifiAdminUtil {
 //            Toast.makeText(context,"没有获取到WiFi状态", Toast.LENGTH_SHORT).show();
 //        }
         return mWifiManager.getWifiState();
+    }
+
+    //获取当前wifi网络连接状态
+    public boolean isWifiConnected() {
+        if (mContext != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mWiFiNetworkInfo = mConnectivityManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (mWiFiNetworkInfo != null) {
+                return mWiFiNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+    //判断是否有网络连接
+    public boolean isNetworkConnected() {
+        if (mContext != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+    //判断MOBILE网络是否可用
+    public boolean isMobileConnected(Context context) {
+        if (mContext != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mMobileNetworkInfo = mConnectivityManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (mMobileNetworkInfo != null) {
+                return mMobileNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+    //获取当前网络连接的类型信息
+    public static int getConnectedType(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
+                return mNetworkInfo.getType();
+            }
+        }
+        return -1;
     }
 
     // 锁定WifiLock
