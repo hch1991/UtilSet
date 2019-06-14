@@ -375,7 +375,7 @@ public class BlueToothUtil {
      * @return :
      * created at 2018/10/24 15:54
      */
-    public static String getBlueToothMacAddress() {
+    public String getBlueToothMacAddress() {
         try {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             Field field = bluetoothAdapter.getClass().getDeclaredField("mService");
@@ -408,7 +408,7 @@ public class BlueToothUtil {
      * @return :
      * created at 2019/1/3 15:16
      */
-    public static String getBlueToothName() {
+    public String getBlueToothName() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter.getName();
     }
