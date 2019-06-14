@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.3.3'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.3.6'
   
   
 # 2018.9.17
@@ -101,3 +101,6 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 解决wifi断开连接 连接成功 广播通知多次的bug
 * 添加定时任务工具类  修改toast工具类提示信息  优化日志工具类调用
 
+# 2019.6.14
+* 优化蓝牙工具类
+* 添加生成二维码、条形码工具类
