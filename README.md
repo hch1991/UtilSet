@@ -2,7 +2,7 @@
 
 使用
 
-    project build.gradle下添加：
+    在工程 build.gradle下添加：
 
 maven { url 'https://jitpack.io' }
 
