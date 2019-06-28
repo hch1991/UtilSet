@@ -15,7 +15,7 @@ maven { url 'https://jitpack.io' }
 		}
 	}
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.3.7'
+    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.3.9'
   
   
 # 2018.9.17
@@ -107,3 +107,7 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 
 # 2019.6.17
 * 添加横向滚动ListView
+
+# 2019.6.28
+* 完善日期管理类
+* 修复下载是保存的文件名错误bug
