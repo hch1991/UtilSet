@@ -415,12 +415,12 @@ public class DownloadUtil {
         if(d == null){
             return null;
         }
-        return new DownloadFileInfoObj(d.getUrl(), d.getFileSizeLong(), d.getETag(), d.getLastModified(), d.getAcceptRangeType(), d.getFileDir(), d.getTempFileName(), d.getCreateDatetime(), d.getDownloadedSizeLong(), d.getTempFileName(), d.getStatus());
+        return new DownloadFileInfoObj(d.getUrl(), d.getFileSizeLong(), d.getETag(), d.getLastModified(), d.getAcceptRangeType(), d.getFileDir(), d.getFileName(), d.getCreateDatetime(), d.getDownloadedSizeLong(), d.getTempFileName(), d.getStatus());
     }
     private List<DownloadFileInfoObj> convertObjs(List<DownloadFileInfo> ds){
         List<DownloadFileInfoObj> downloadFileInfoObjs = new ArrayList<>();
         for(DownloadFileInfo d:ds){
-            downloadFileInfoObjs.add(new DownloadFileInfoObj(d.getUrl(), d.getFileSizeLong(), d.getETag(), d.getLastModified(), d.getAcceptRangeType(), d.getFileDir(), d.getTempFileName(), d.getCreateDatetime(), d.getDownloadedSizeLong(), d.getTempFileName(), d.getStatus()));
+            downloadFileInfoObjs.add(new DownloadFileInfoObj(d.getUrl(), d.getFileSizeLong(), d.getETag(), d.getLastModified(), d.getAcceptRangeType(), d.getFileDir(), d.getFileName(), d.getCreateDatetime(), d.getDownloadedSizeLong(), d.getTempFileName(), d.getStatus()));
         }
         return downloadFileInfoObjs;
     }
