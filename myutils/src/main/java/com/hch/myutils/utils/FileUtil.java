@@ -208,7 +208,7 @@ public class FileUtil {
      * @return <code>true</code> if and only if the file was copied;
      * <code>false</code> otherwise
      */
-    public boolean copyFile(String oldPath$Name, String newPath$Name) {
+    public static boolean copyFile(String oldPath$Name, String newPath$Name) {
         try {
             File oldFile = new File(oldPath$Name);
             File newFile = new File(newPath$Name);
@@ -243,7 +243,7 @@ public class FileUtil {
      * @return <code>true</code> if and only if the directory and files were copied;
      * <code>false</code> otherwise
      */
-    public boolean copyFolder(String oldPath, String newPath) {
+    public static boolean copyFolder(String oldPath, String newPath) {
         try {
             File newFile = new File(newPath);
             if (!newFile.exists()) {
