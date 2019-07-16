@@ -210,8 +210,13 @@ public class FileUtil {
      */
     public boolean copyFile(String oldPath$Name, String newPath$Name) {
         try {
+            File oldFile = new File(oldPath$Name);
+            File newFile = new File(newPath$Name);
         if (!oldFile.exists() || !oldFile.isFile() || !oldFile.canRead()) {
             return false;
+        }
+        if(newFile.exists()){
+            newFile.delete();
         }
             FileInputStream fileInputStream = new FileInputStream(oldPath$Name);    //读入原文件
             FileOutputStream fileOutputStream = new FileOutputStream(newPath$Name);
