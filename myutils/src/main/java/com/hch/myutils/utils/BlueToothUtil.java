@@ -151,13 +151,15 @@ public class BlueToothUtil {
 
     public void startScanBlueDevice(ScanBluetoothDeviceInterface scanBluetoothDeviceInterface) {
         mScanBluetoothDeviceInterface = scanBluetoothDeviceInterface;
-        mBroadcastReceiver = new BlueBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        mContext.registerReceiver(mBroadcastReceiver, intentFilter);
+        if(mBroadcastReceiver == null){
+            mBroadcastReceiver = new BlueBroadcastReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            mContext.registerReceiver(mBroadcastReceiver, intentFilter);
+        }
         // 先判断蓝牙是否在开启扫描中 如果没有开启则开启扫描  开启了则不管
         if (!mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.startDiscovery();
@@ -288,7 +290,7 @@ public class BlueToothUtil {
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 MLog.d("扫描完毕");
                 mScanBluetoothDeviceInterface.scanStatus(false);
-//                startDiscovery();
+                stopScanBlueDevice();
             }
         }
     }

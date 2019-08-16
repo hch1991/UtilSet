@@ -16,12 +16,24 @@
 
 package com.hch.myutils.utils;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.annotation.DrawableRes;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 /**
@@ -41,13 +53,11 @@ public class GlideUtils {
         if (isCenterCrop) {
             Glide.with(context)
                     .load(url)
-                    .crossFade()
                     .centerCrop()
                     .into(view);
         } else {
             Glide.with(context)
                     .load(url)
-                    .crossFade()
                     .into(view);
         }
     }
@@ -57,14 +67,12 @@ public class GlideUtils {
             Glide.with(context)
                     .load(url)
                     .placeholder(holder)
-                    .crossFade()
                     .centerCrop()
                     .into(view);
         } else {
             Glide.with(context)
                     .load(url)
                     .placeholder(holder)
-                    .crossFade()
                     .into(view);
         }
     }
@@ -73,13 +81,11 @@ public class GlideUtils {
         if (isCenterCrop) {
             Glide.with(fragment)
                     .load(url)
-                    .crossFade()
                     .centerCrop()
                     .into(view);
         } else {
             Glide.with(fragment)
                     .load(url)
-                    .crossFade()
                     .into(view);
         }
     }
@@ -87,7 +93,6 @@ public class GlideUtils {
     public static void load(Context context, @DrawableRes int url, ImageView view) {
         Glide.with(context)
                 .load(url)
-                .crossFade()
                 .into(view);
     }
 
@@ -95,7 +100,6 @@ public class GlideUtils {
         Glide.with(context)
                 .load(url)
                 .placeholder(holder)
-                .crossFade()
                 .into(view);
     }
 
@@ -103,7 +107,6 @@ public class GlideUtils {
         Glide.with(context)
                 .load(url)
                 .placeholder(holder)
-                .crossFade()
                 .into(view);
     }
 
@@ -111,7 +114,6 @@ public class GlideUtils {
         Glide.with(Fragment)
                 .load(url)
                 .placeholder(holder)
-                .crossFade()
                 .into(view);
     }
 
@@ -120,7 +122,6 @@ public class GlideUtils {
                 load(url).
                 placeholder(holder)
                 .transform(new GlideCircleTransform(context)).
-                crossFade().
                 into(view);
     }
 
@@ -129,4 +130,57 @@ public class GlideUtils {
         Glide.get(context).clearDiskCache();
         Glide.get(context).clearMemory();
     }
+
+    private void saveImg(Context context, String imageUrl, final String savePath, final String saveName) {
+        Glide.get(context).clearMemory();
+        Glide.with(context).asBitmap()
+                .load(imageUrl)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                        saveToSystemGallery(bitmap,savePath,saveName);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
+    }
+
+    public void saveToSystemGallery(Bitmap bmp,String savePath,String saveName) {
+        // 首先保存图片
+        File fileDir = new File(Environment.getExternalStorageDirectory(), savePath);
+        if (!fileDir.exists()) {
+            fileDir.mkdir();
+        }
+        File file = new File(fileDir, saveName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        // 其次把文件插入到系统图库
+//        try {
+//            MediaStore.Images.Media.insertImage(getContentResolver(),
+//                    file.getAbsolutePath(), fileName, null);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        // 最后通知图库更新
+//        //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(file.getAbsolutePath())));
+//        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        Uri uri = Uri.fromFile(file);
+//        intent.setData(uri);
+//        sendBroadcast(intent);
+//        //图片保存成功，图片路径：
+//        Toast.makeText(this,
+//                "图片保存路径：" + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+    }
+
 }

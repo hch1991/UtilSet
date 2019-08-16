@@ -1,12 +1,25 @@
 package com.hch.myutils.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 /**
  * @author hechuang
@@ -15,6 +28,12 @@ import java.io.UnsupportedEncodingException;
  * @date 2018/11/12 14:39
  */
 public class FileUtil {
+
+    private static final int SUCCESS = 1;
+    private static final int FAILED = 0;
+    private static FileOperateCallback callback;
+    private static volatile boolean isSuccess;
+    private static String errorStr;
 
     /**
      * @param :
@@ -292,4 +311,123 @@ public class FileUtil {
             return false;
         }
     }
+
+    private static Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (callback != null) {
+                if (msg.what == SUCCESS) {
+                    callback.onSuccess();
+                }
+                if (msg.what == FAILED) {
+                    callback.onFailed(msg.obj.toString());
+                }
+            }
+        }
+    };
+    /**
+      * @Description: TODO 复制assets文件到sd卡
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/7/30
+      * @throws
+      */
+    public static void copyAssetsToSD(final Context context, final String srcPath, final String sdPath, final FileOperateCallback fileOperateCallback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                copyAssetsToDst(context, srcPath, sdPath);
+                if (isSuccess)
+                    handler.obtainMessage(SUCCESS).sendToTarget();
+                else
+                    handler.obtainMessage(FAILED, errorStr).sendToTarget();
+                if(fileOperateCallback != null){
+                    callback = fileOperateCallback;
+                }
+            }
+        }).start();
+    }
+
+    /**
+      * @Description: TODO 开始复制文件
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/7/30
+      * @throws
+      */
+    private static void copyAssetsToDst(Context context, String srcPath, String dstPath) {
+        try {
+            String fileNames[] = context.getAssets().list(srcPath);
+            if (fileNames.length > 0) {
+                File file = new File(Environment.getExternalStorageDirectory(), dstPath);
+                if (!file.exists()) file.mkdirs();
+                for (String fileName : fileNames) {
+                    if (!srcPath.equals("")) { // assets 文件夹下的目录
+                        copyAssetsToDst(context, srcPath + File.separator + fileName, dstPath + File.separator + fileName);
+                    } else { // assets 文件夹
+                        copyAssetsToDst(context, fileName, dstPath + File.separator + fileName);
+                    }
+                }
+            } else {
+                File outFile = new File(Environment.getExternalStorageDirectory(), dstPath);
+                InputStream is = context.getAssets().open(srcPath);
+                FileOutputStream fos = new FileOutputStream(outFile);
+                byte[] buffer = new byte[1024];
+                int byteCount;
+                while ((byteCount = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, byteCount);
+                }
+                fos.flush();
+                is.close();
+                fos.close();
+            }
+            isSuccess = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorStr = e.getMessage();
+            isSuccess = false;
+        }
+    }
+    /**
+      * @Description: TODO 成功与失败的回调
+      * @author hechuang
+      * @param
+      * @return    返回类型
+      * @create 2019/7/30
+      * @throws
+      */
+    public interface FileOperateCallback {
+        void onSuccess();
+
+        void onFailed(String error);
+    }
+    /**
+      * @Description: TODO 刷新系统媒体库
+      * @author hechuang
+      * @param  path 文件路径， ①目前没有找到刷新多张图片方式，只有弄一张调一次  ②如果要刷新整个存储空间的媒体库，则在path参数处传入Environment.getExternalStorageDirectory().toString();
+      * @return    返回类型
+      * @create 2019/8/16
+      * @throws
+      */
+    public static void updateMedia(final Context context, String path){
+
+        if(SDK_INT >= Build.VERSION_CODES.KITKAT){//当大于等于Android 4.4时
+            MediaScannerConnection.scanFile(context, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                @Override
+                public void onScanCompleted(String path, Uri uri) {
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(uri);
+                    context.sendBroadcast(mediaScanIntent);
+                }
+            });
+
+        }else{//Andrtoid4.4以下版本
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.fromFile((new File(path).getParentFile()))));
+        }
+
+    }
+
 }
