@@ -88,7 +88,7 @@ public class DownloadUtil {
      * @create 2019/1/24
      */
     public static void initDownload(Context context, String savePath, int downloadTaskSize, int retrySize) {
-        initDownload(context, savePath, 0, retrySize, 15);
+        initDownload(context, savePath, downloadTaskSize, retrySize, 30);
     }
 
     /**
@@ -100,7 +100,7 @@ public class DownloadUtil {
      * @create 2019/1/24
      */
     public static void initDownload(Context context, String savePath, int downloadTaskSize, int retrySize, int timeOut) {
-        initDownload(context, savePath, 0, retrySize, timeOut, false);
+        initDownload(context, savePath, downloadTaskSize, retrySize, timeOut, false);
     }
 
     /**
