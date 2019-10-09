@@ -33,7 +33,7 @@ import static android.content.ContentValues.TAG;
 public class BlueToothUtil {
 
     private BluetoothAdapter mBluetoothAdapter;
-    private BlueBroadcastReceiver mBroadcastReceiver;
+    private BlueBroadcastReceiver mBroadcastReceiver = null;
     private BlueDeviceConnectReceiver mBlueDeviceConnectReceiver;
     private String HID_NAME = "";  // 连接的蓝牙设备名
     private String HID_ADDR = "";  //连接的蓝牙设备地址
@@ -152,6 +152,7 @@ public class BlueToothUtil {
     public void startScanBlueDevice(ScanBluetoothDeviceInterface scanBluetoothDeviceInterface) {
         mScanBluetoothDeviceInterface = scanBluetoothDeviceInterface;
         if(mBroadcastReceiver == null){
+            MLog.d("开始注册蓝牙扫描回调===============");
             mBroadcastReceiver = new BlueBroadcastReceiver();
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
@@ -162,6 +163,7 @@ public class BlueToothUtil {
         }
         // 先判断蓝牙是否在开启扫描中 如果没有开启则开启扫描  开启了则不管
         if (!mBluetoothAdapter.isDiscovering()) {
+            MLog.d("开始扫描蓝牙===============");
             mBluetoothAdapter.startDiscovery();
             mScanBluetoothDeviceInterface.scanStatus(true);
         }
@@ -177,8 +179,11 @@ public class BlueToothUtil {
       */
     public void stopScanBlueDevice(){
         if(mBroadcastReceiver != null){
+            MLog.d("取消蓝牙扫描===============");
             mBluetoothAdapter.cancelDiscovery();
+            MLog.d("取消注册蓝牙扫描回调===============");
             mContext.unregisterReceiver(mBroadcastReceiver);
+            mBroadcastReceiver = null;
         }
     }
     /**
@@ -190,6 +195,7 @@ public class BlueToothUtil {
       * @throws
       */
     public void addBlueDeviceConnectListener(BlueDeviceConnectStateInterface blueDeviceConnectStateInterface){
+        MLog.d("添加蓝牙连接状态监听===============");
         mBlueDeviceConnectStateInterface = blueDeviceConnectStateInterface;
         mBlueDeviceConnectReceiver = new BlueDeviceConnectReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -208,6 +214,7 @@ public class BlueToothUtil {
       */
     public void removeBlueDeviceConnectListener(){
         if(mBlueDeviceConnectReceiver != null){
+            MLog.d("移除蓝牙连接状态监听===============");
             mContext.unregisterReceiver(mBlueDeviceConnectReceiver);
         }
     }
@@ -225,6 +232,7 @@ public class BlueToothUtil {
         HID_NAME = mConnectDevice.getName();
         HID_ADDR = mConnectDevice.getAddress();
         mBluetoothAdapter.cancelDiscovery();
+        MLog.d("连接指定蓝牙==============="+HID_NAME+"=====Address====="+HID_ADDR);
         mScanBluetoothDeviceInterface.scanStatus(false);
         if (mConnectDevice == null) {
             return;
