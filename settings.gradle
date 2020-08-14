@@ -1,1 +1,2 @@
+include ':SelectNativeVideoLibrary'
 include ':app',':myutils'

@@ -12,55 +12,36 @@ import android.util.Log;
  */
 public class MLog
 {
+
+    static String className;//类名
+    static String methodName;//方法名
+    static int lineNumber;//行数
+
     /**  日志log. */
     private static final String TAG = "TAG";
     /** 是否打印log. */
     private static final boolean DEBUG = true;
-
-
-    //======================================= log.e =========================================//
-    public static void e(String tag, String err)
-    {
-        if (DEBUG)
-        {
-            Log.e(tag, err);
-        }
-    }
-    public static void e(String tag, String debug, Throwable e)
-    {
-        if (DEBUG)
-        {
-            Log.e(tag, debug, e);
-        }
-    }
-    public static void e(String msg)
-    {
-        if (DEBUG)
-        {
-            Log.e(TAG, msg);
-        }
-    }
 
     //======================================= log.d =========================================//
     public static void d(String tag, String debug)
     {
         if (DEBUG && debug != null)
         {
-            Log.d(tag, debug);
+            printLog(1,tag, createLog(debug));
         }
     }
     public static void d(String tag, String debug, Throwable e)
     {
         if (DEBUG)
         {
-            Log.d(tag, debug, e);
+            printLog(1,tag, createLog(debug), e);
         }
     }
     public static void d(String msg)
     {
         if (DEBUG)
         {
-            Log.d(TAG, msg);
+            printLog(1, createLog(msg));
         }
     }
 
@@ -69,21 +50,21 @@ public class MLog
     {
         if (DEBUG)
         {
-            Log.i(tag, info);
+            printLog(2,tag, info);
         }
     }
     public static void i(String tag, String debug, Throwable e)
     {
         if (DEBUG)
         {
-            Log.i(tag, debug, e);
+            printLog(2,tag, debug, e);
         }
     }
     public static void i(String msg)
     {
         if (DEBUG)
         {
-            Log.i(TAG, msg);
+            printLog(2, msg);
         }
     }
 
@@ -92,21 +73,43 @@ public class MLog
     {
         if (DEBUG)
         {
-            Log.w(tag, info);
+            printLog(3,tag, info);
         }
     }
     public static void w(String tag, String debug, Throwable e)
     {
         if (DEBUG)
         {
-            Log.w(tag, debug, e);
+            printLog(3,tag, debug, e);
         }
     }
     public static void w(String msg)
     {
         if (DEBUG)
         {
-            Log.w(TAG, msg);
+            printLog(3, msg);
+        }
+    }
+    //======================================= log.e =========================================//
+    public static void e(String tag, String err)
+    {
+        if (DEBUG)
+        {
+            printLog(4,tag, createLog(err));
+        }
+    }
+    public static void e(String tag, String debug, Throwable e)
+    {
+        if (DEBUG)
+        {
+            printLog(4,tag, createLog(debug),e);
+        }
+    }
+    public static void e(String msg)
+    {
+        if (DEBUG)
+        {
+            printLog(4, createLog(msg));
         }
     }
 
@@ -117,5 +120,72 @@ public class MLog
         {
             e.printStackTrace();
         }
+    }
+
+    private static void printLog(int type,String msg){
+        getMethodNames(new Throwable().getStackTrace());
+        switch (type){
+            case 1:
+                Log.d(TAG, createLog(msg));
+                break;
+            case 2:
+                Log.i(TAG, createLog(msg));
+                break;
+            case 3:
+                Log.w(TAG, createLog(msg));
+                break;
+            case 4:
+                Log.e(TAG, createLog(msg));
+                break;
+        }
+
+    }
+    private static void printLog(int type,String tag,String msg){
+        getMethodNames(new Throwable().getStackTrace());
+        switch (type){
+            case 1:
+                Log.d(tag, createLog(msg));
+                break;
+            case 2:
+                Log.i(tag, createLog(msg));
+                break;
+            case 3:
+                Log.w(tag, createLog(msg));
+                break;
+            case 4:
+                Log.e(tag, createLog(msg));
+                break;
+        }
+    }
+    private static void printLog(int type,String tag,String msg,Throwable e){
+        getMethodNames(new Throwable().getStackTrace());
+        switch (type){
+            case 1:
+                Log.d(tag, createLog(msg),e);
+                break;
+            case 2:
+                Log.i(tag, createLog(msg),e);
+                break;
+            case 3:
+                Log.w(tag, createLog(msg),e);
+                break;
+            case 4:
+                Log.e(tag, createLog(msg),e);
+                break;
+        }
+    }
+
+    private static String createLog(String log ) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(methodName);
+        buffer.append("(").append(className).append(":").append(lineNumber).append(")");
+        buffer.append(log);
+        return buffer.toString();
+    }
+
+    private static void getMethodNames(StackTraceElement[] sElements){
+        className = sElements[1].getFileName();
+        methodName = sElements[1].getMethodName();
+        lineNumber = sElements[1].getLineNumber();
     }
 }
