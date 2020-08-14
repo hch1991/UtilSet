@@ -14,10 +14,11 @@ maven { url 'https://jitpack.io' }
 			maven { url 'https://jitpack.io' }
 		}
 	}
+	
+	app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.4.8'
 
-    app build.gradle下添加依赖 implementation 'com.github.hch1991:MyUtils:v1.4.6'
   
-  
+
 # 2018.9.17
 
 **工具类集合**
@@ -116,3 +117,15 @@ LogcatHelper.getInstance(this).stop(); 停止保存日志
 * 文件工具类添加文件复制
 * 添加飘落动画自定义view
 * 添加ini文件读写
+
+# 2020.08.14
+
+* 添加刷新媒体库方法
+* 优化蓝牙工具类方法
+* 更新glide工具类
+* 修改下载超时时间为30秒
+* 添加注释并给蓝牙扫描监听分配默认值null
+* 迁移AndroidX环境
+* 添加各时间格式转换
+* 添加获取扫描本地视频工具类   优化mlog工具类
+
