@@ -40,39 +40,38 @@ public class ChineseNameUtil {
     }
 
     /**
-     * @param : sex  0、代表是女  1代表是男  其他代表是未知男女或不男不女
-     * @return :
-     * created at 2018/11/29 14:48
-     * @Description: TODO 根据性别返回对应生成的姓名
-     * @author : hechuang
+     * @param          sur 姓氏    0、代表是女  1代表是男  其他代表是未知男女或不男不女
+     * @return
+     * @description 根据性别返回对应生成的姓名
+     * @date: 2020/8/26 10:59
+     * @author: hch
      */
-
-    public String getName(int sex) {
+    public String getNameBySurAndSex(String sur, int sex) {
         String generateName = "";
+        if(sur.equals("")){
+            sur = surNameList.get((int) (Math.random() * surNameList.size()));
+        }
         if (sex == 0) {
-            String sur = surNameList.get((int) (Math.random() * surNameList.size()));
             String name = girlNameList.get((int) (Math.random() * girlNameList.size()));
             generateName = sur + name;
         } else if (sex == 1) {
-            String sur = surNameList.get((int) (Math.random() * surNameList.size()));
             String name = boyNameList.get((int) (Math.random() * boyNameList.size()));
             generateName = sur + name;
         } else {
-            String sur = surNameList.get((int) (Math.random() * surNameList.size()));
             String name = allNameList.get((int) (Math.random() * allNameList.size()));
             generateName = sur + name;
         }
         return generateName;
     }
-    
+
     /**
+     * @param :
+     * @return :
+     * created at 2018/11/29 15:00
      * @Description: TODO pull解析xml 从xml中读取list列表出来
      * @author : hechuang
-     * @param : 
-     * @return : 
-     * created at 2018/11/29 15:00
      */
-    
+
     private List<String> getProvince(Context context, String fileName) {
         List<String> resultList = new ArrayList<String>();
         //标记是否读取下一个节点的内容

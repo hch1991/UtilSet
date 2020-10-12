@@ -1,6 +1,7 @@
 package com.hch.utilset;
 
 import android.bluetooth.BluetoothDevice;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.hch.myutils.interfaces.DownloadStateListener;
 import com.hch.myutils.utils.BlueToothUtil;
 import com.hch.myutils.utils.MLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -140,4 +142,16 @@ public class MainActivity extends AppCompatActivity {
 //        mPrinterTextView.startPrint();
 //
 //    }
+
+//        飘落动画
+//        flowerFlaySfv.setSnowDuration(300);
+//        ArrayList<Drawable> imageList = new ArrayList<>();
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake1,null));
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake2,null));
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake3,null));
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake4,null));
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake5,null));
+//        imageList.add(mContext.getResources().getDrawable(R.mipmap.snowflake6,null));
+//        flowerFlaySfv.setImageDrawableList(imageList);
+//        flowerFlaySfv.startAnimation();
 }
